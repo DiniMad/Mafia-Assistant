@@ -13,8 +13,7 @@ const PageTitle = ({title}: Props) => {
     );
 };
 
-const PageTitleComponent = styled.div`
-  flex: 1;
+export const PageTitleComponent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
