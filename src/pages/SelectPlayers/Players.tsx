@@ -1,32 +1,33 @@
 import React from "react";
 import styled from "styled-components";
 import Player from "./Player";
+import {v4 as uuid} from "uuid";
 
 const Players = () => {
     // TODO: Implement the actual players instead of using names
     const names = [
-        "سید محمد",
-        "سید علی",
-        "سید مجتبی",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "سید علی میری",
-        "دایی",
-        "آقا محسن",
-        "آقا محمد",
-        "سید حسین",
+        {name: "سید محمد", id: uuid()},
+        {name: "سید علی", id: uuid()},
+        {name: "سید مجتبی", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "سید علی میری", id: uuid()},
+        {name: "دایی", id: uuid()},
+        {name: "آقا محسن", id: uuid()},
+        {name: "آقا محمد", id: uuid()},
+        {name: "سید حسین", id: uuid()},
     ];
     return (
         <PlayersComponent>
-            {names.map((name, index) =>
-                <Player key={index} selected={Math.random() > 0.5} name={name}/>)}
+            {names.map((player, index) =>
+                <Player key={index} selected={Math.random() > 0.5} name={player.name}/>)}
         </PlayersComponent>
     );
 };
