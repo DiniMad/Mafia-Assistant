@@ -2,11 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import GlobalStyle from "./GlobalStyle";
 import {colors, assets} from "./utilities";
+import SelectPlayers from "./pages/SelectPlayers/SelectPlayers";
+import Providers from "./Providers";
 
 const App = () => {
     return (
         <AppComponent>
-            <GlobalStyle/>
+            <Providers>
+                <SelectPlayers/>
+                <GlobalStyle/>
+            </Providers>
         </AppComponent>
     );
 };
