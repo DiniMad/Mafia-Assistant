@@ -1,27 +1,35 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
 import {colors} from "../../utilities";
 import {Draggable} from "react-beautiful-dnd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowsAltV} from "@fortawesome/free-solid-svg-icons";
+import PlayerType from "../../types/Player";
+import PlayersContext from "../../contexts/PlayersContext";
 
-// TODO: Should get an intersection of Player type and its props.
 type Props = {
-    selected: boolean,
-    name: string,
-    id: string,
     index: number,
+    player: PlayerType
 }
-const Player = ({selected, name, id, index}: Props) => {
+const Player = ({index, player}: Props) => {
+    const [, dispatch] = useContext(PlayersContext);
+
+    const selectPlayer = () => {
+        dispatch({
+            type: "SELECT_PLAYER",
+            payload: player.id
+        });
+    };
+    
     return (
-        <Draggable draggableId={id} index={index} isDragDisabled={!selected}>
+        <Draggable draggableId={player.id} index={index} isDragDisabled={!player.selected}>
             {(provided, snapshot) =>
                 <PlayerComponent {...provided.draggableProps}
                                  ref={provided.innerRef}
-                                 selected={selected}
+                                 selected={player.selected}
                                  dragging={snapshot.isDragging}>
-                    <PlayerName>{name}</PlayerName>
-                    <SelectButton/>
+                    <PlayerName>{player.name}</PlayerName>
+                    <SelectButton onClick={selectPlayer}/>
                     <DragHandle {...provided.dragHandleProps}>
                         <FontAwesomeIcon icon={faArrowsAltV}/>
                     </DragHandle>
@@ -62,6 +70,7 @@ const SelectButton = styled.button`
   justify-self: stretch;
   align-self: stretch;
   background-color: transparent;
+  z-index: 1;
 `;
 
 const DragHandle = styled.button`

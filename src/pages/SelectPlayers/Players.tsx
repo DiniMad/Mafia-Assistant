@@ -1,32 +1,12 @@
-import React, {useState} from "react";
+import React, {useContext} from "react";
 import styled from "styled-components";
 import Player from "./Player";
 import {v4 as uuid} from "uuid";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
+import PlayersContext from "../../contexts/PlayersContext";
 
 const Players = () => {
-    // TODO: Implement the actual players instead of using names
-    const selectedGenerator = () => Math.random() > .5;
-    const playersInitial = [
-        {name: "سید محمد", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی", id: uuid(), selected: selectedGenerator()},
-        {name: "سید مجتبی", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
-        {name: "دایی", id: uuid(), selected: selectedGenerator()},
-        {name: "آقا محسن", id: uuid(), selected: selectedGenerator()},
-        {name: "آقا محمد", id: uuid(), selected: selectedGenerator()},
-        {name: "سید حسین", id: uuid(), selected: selectedGenerator()},
-    ];
-    const [players, setPlayers] = useState(playersInitial);
+    const [players, dispatch] = useContext(PlayersContext);
 
     const onDragEnd = ({draggableId, destination, source}: DropResult) => {
         if (!destination) return;
@@ -38,7 +18,10 @@ const Players = () => {
         const newPlayers = Array.from(players);
         newPlayers.splice(source.index, 1);
         newPlayers.splice(destination.index, 0, item);
-        setPlayers(newPlayers);
+        dispatch({
+            type: "REORDER_PLAYER",
+            payload: newPlayers
+        });
     };
 
     return (
@@ -47,7 +30,7 @@ const Players = () => {
                 {(provided) =>
                     <PlayersComponent {...provided.droppableProps} ref={provided.innerRef}>
                         {players.map((player, index) =>
-                            <Player key={player.id} {...player} index={index}/>)}
+                            <Player key={player.id} index={index} player={player}/>)}
                         {provided.placeholder}
                     </PlayersComponent>
                 }
