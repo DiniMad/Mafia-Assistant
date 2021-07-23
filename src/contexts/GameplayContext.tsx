@@ -53,5 +53,3 @@ export const GameplayProvider: FC = ({children}) => {
         </GameplayContext.Provider>
     );
 };
-
-export default GameplayContext;

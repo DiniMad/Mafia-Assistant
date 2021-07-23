@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import styled from "styled-components";
-import GameplayContext from "../../contexts/GameplayContext";
+import {GameplayContext} from "../../contexts/GameplayContext";
 import Player from "./Player";
 
 const Players = () => {

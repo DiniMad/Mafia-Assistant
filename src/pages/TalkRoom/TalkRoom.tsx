@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 import styled from "styled-components";
 import {colors} from "../../utilities";
-import GameplayContext from "../../contexts/GameplayContext";
+import {GameplayContext} from "../../contexts/GameplayContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTheaterMasks, faHandPaper} from "@fortawesome/free-solid-svg-icons";
 import {colorWithOpacity} from "../../utilities/colors";
