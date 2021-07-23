@@ -1,12 +1,12 @@
 import React, {useContext} from "react";
-import PageTitle, {PageTitleComponent} from "../../components/PageTitle";
 import styled from "styled-components";
 import {colors} from "../../utilities";
 import GameplayContext from "../../contexts/GameplayContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTheaterMasks, faHandPaper} from "@fortawesome/free-solid-svg-icons";
 import {colorWithOpacity} from "../../utilities/colors";
-import Players, {PlayersComponent} from "./Players";
+import Players from "./Players";
+import PageLayout from "../../components/PageLayout";
 
 
 const TalkRoom = () => {
@@ -15,46 +15,25 @@ const TalkRoom = () => {
     const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES"});
 
     return (
-        <TalkRoomComponent>
-            <PageTitle title={"گفتگو"}/>
-            <Players/>
-            <Menu>
-                <ToggleRolesButton displayRoles={displayRoles} onClick={toggleDisplayRoles}>
-                    <FontAwesomeIcon icon={faTheaterMasks}/>
-                </ToggleRolesButton>
-                <VoteButton>
-                    <FontAwesomeIcon icon={faHandPaper}/>
-                    <FontAwesomeIcon icon={faHandPaper}/>
-                    <FontAwesomeIcon icon={faHandPaper}/>
-                </VoteButton>
-            </Menu>
-        </TalkRoomComponent>
+        <PageLayout pageTitle={"گفتگو"}>
+            {() => {
+                return {
+                    content: <Players/>,
+                    menuContent: <>
+                        <ToggleRolesButton displayRoles={displayRoles} onClick={toggleDisplayRoles}>
+                            <FontAwesomeIcon icon={faTheaterMasks}/>
+                        </ToggleRolesButton>
+                        <VoteButton>
+                            <FontAwesomeIcon icon={faHandPaper}/>
+                            <FontAwesomeIcon icon={faHandPaper}/>
+                            <FontAwesomeIcon icon={faHandPaper}/>
+                        </VoteButton>
+                    </>,
+                };
+            }}
+        </PageLayout>
     );
 };
-
-const TalkRoomComponent = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-
-  ${PageTitleComponent} {
-    flex: 1;
-  }
-
-  ${PlayersComponent} {
-    flex: 10;
-  }
-`;
-
-const Menu = styled.div`
-  flex: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 .5rem;
-  background-color: ${colors.primary};
-`;
 
 type ToggleRolesButtonProps = {
     displayRoles: boolean
