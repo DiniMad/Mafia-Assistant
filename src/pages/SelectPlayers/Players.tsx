@@ -3,10 +3,10 @@ import styled from "styled-components";
 import Player from "./Player";
 import {v4 as uuid} from "uuid";
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
-import PlayersContext from "../../contexts/PlayersContext";
+import {PersistentPlayersContext} from "../../contexts/PersistentPlayersContext";
 
 const Players = () => {
-    const [players, dispatch] = useContext(PlayersContext);
+    const [players, dispatch] = useContext(PersistentPlayersContext);
 
     const onDragEnd = ({draggableId, destination, source}: DropResult) => {
         if (!destination) return;

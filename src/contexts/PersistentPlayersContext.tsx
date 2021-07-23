@@ -10,8 +10,8 @@ type ReorderPlayerAction = {
     type: "REORDER_PLAYER",
     payload: PersistentPlayer[]
 }
-type PlayerAction = SelectPlayerAction | ReorderPlayerAction
-const reducer = (state: PersistentPlayer[], action: PlayerAction) => {
+type PersistentPlayerAction = SelectPlayerAction | ReorderPlayerAction
+const reducer = (state: PersistentPlayer[], action: PersistentPlayerAction) => {
     if (action.type === "SELECT_PLAYER") {
         return state.map(player =>
             player.id === action.payload ?
@@ -27,16 +27,14 @@ const reducer = (state: PersistentPlayer[], action: PlayerAction) => {
     return state;
 };
 
-type PlayerContextType = [PersistentPlayer[], Dispatch<PlayerAction>];
-export const PlayersContext = createContext<PlayerContextType>({} as PlayerContextType);
-export const PlayersProvider: FC = ({children}) => {
+type PersistentPlayerContextType = [PersistentPlayer[], Dispatch<PersistentPlayerAction>];
+export const PersistentPlayersContext = createContext<PersistentPlayerContextType>({} as PersistentPlayerContextType);
+export const PersistentPlayersProvider: FC = ({children}) => {
     const [state, dispatch] = useStorageReducer(localStorage, "PLAYERS", reducer, []);
 
     return (
-        <PlayersContext.Provider value={[state, dispatch]}>
+        <PersistentPlayersContext.Provider value={[state, dispatch]}>
             {children}
-        </PlayersContext.Provider>
+        </PersistentPlayersContext.Provider>
     );
 };
-
-export default PlayersContext;

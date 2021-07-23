@@ -5,14 +5,14 @@ import {Draggable} from "react-beautiful-dnd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowsAltV} from "@fortawesome/free-solid-svg-icons";
 import {PersistentPlayer} from "../../types/PersistentData";
-import PlayersContext from "../../contexts/PlayersContext";
+import {PersistentPlayersContext} from "../../contexts/PersistentPlayersContext";
 
 type Props = {
     index: number,
     player: PersistentPlayer
 }
 const Player = ({index, player}: Props) => {
-    const [, dispatch] = useContext(PlayersContext);
+    const [, dispatch] = useContext(PersistentPlayersContext);
 
     const selectPlayer = () => {
         dispatch({

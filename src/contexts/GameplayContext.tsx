@@ -1,6 +1,6 @@
 import React, {createContext, Dispatch, FC, useContext, useEffect, useReducer} from "react";
 import {Gameplay, GameplayPlayer, generatePlayers} from "../types/Gameplay";
-import PlayersContext from "./PlayersContext";
+import {PersistentPlayersContext} from "./PersistentPlayersContext";
 
 type SetPlayersGameplayAction = {
     type: "SET_PLAYERS",
@@ -39,7 +39,7 @@ export const GameplayProvider: FC = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
     // TODO: Temporary Initialization
-    const [players] = useContext(PlayersContext);
+    const [players] = useContext(PersistentPlayersContext);
     useEffect(() => {
         dispatch({
             type: "SET_PLAYERS",

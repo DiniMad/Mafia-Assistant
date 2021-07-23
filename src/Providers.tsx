@@ -1,14 +1,14 @@
 import React, {FC} from "react";
-import {PlayersProvider} from "./contexts/PlayersContext";
+import {PersistentPlayersProvider} from "./contexts/PersistentPlayersContext";
 import {GameplayProvider} from "./contexts/GameplayContext";
 
 const Providers: FC = ({children}) => {
     return (
-        <PlayersProvider>
+        <PersistentPlayersProvider>
             <GameplayProvider>
                 {children}
             </GameplayProvider>
-        </PlayersProvider>
+        </PersistentPlayersProvider>
     );
 };
 
