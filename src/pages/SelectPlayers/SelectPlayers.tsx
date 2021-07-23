@@ -24,10 +24,10 @@ const SelectPlayers = () => {
 };
 
 const MenuButton = styled.button`
-  font-size: 1.2rem;
+  font-size: 1.9rem;
   font-weight: bold;
   color: ${colors.white};
-  padding: .3rem .8rem;
+  padding: .5rem 1.2rem;
 `;
 
 export default SelectPlayers;

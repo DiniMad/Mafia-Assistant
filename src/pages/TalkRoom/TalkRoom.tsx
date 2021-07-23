@@ -39,11 +39,11 @@ type ToggleRolesButtonProps = {
     displayRoles: boolean
 }
 const ToggleRolesButton = styled.button<ToggleRolesButtonProps>`
-  font-size: 1.2rem;
+  font-size: 1.9rem;
   font-weight: bold;
   color: ${colors.white};
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 4rem;
+  height: 4rem;
   background-color: ${props => props.displayRoles ? colors.secondary : "transparent"};
   transition: background-color .4s;
 `;
@@ -52,11 +52,11 @@ const VoteButton = styled.button`
   display: grid;
   justify-content: center;
   align-items: center;
-  font-size: 1.2rem;
+  font-size: 1.9rem;
   font-weight: bold;
   color: ${colors.white};
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 4rem;
+  height: 4rem;
 
   svg {
     grid-row: 1/1;
@@ -64,13 +64,13 @@ const VoteButton = styled.button`
 
     &:nth-of-type(1) {
       color: ${colors.secondary};
-      margin-left: -.4rem;
+      margin-left: -.7rem;
       transform: rotate(-30deg);
     }
 
     &:nth-of-type(2) {
       transform: rotate(30deg);
-      margin-left: .4rem;
+      margin-left: .7rem;
     }
 
     &:nth-of-type(3) {

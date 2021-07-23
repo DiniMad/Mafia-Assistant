@@ -26,7 +26,8 @@ const PlayerComponent = styled.div<PlayerItemProps>`
   grid-template-columns: 1fr 5fr 1fr;
   justify-content: center;
   align-items: center;
-  margin: .4rem;
+  margin: .6rem;
+  height: 4rem;
   background-color: ${props =>
           props.talking ?
                   colors.secondary :
@@ -39,11 +40,10 @@ const PlayerSideAction = styled.button<PlayerSideActionProps>`
   grid-row: 1;
   justify-self: center;
   align-self: center;
-  font-size: .9rem;
+  font-size: 1.4rem;
   color: ${colors.white};
-  margin: .2rem;
-  height: 2rem;
-  width: 2rem;
+  height: 3.5rem;
+  width: 3.5rem;
   background-color: ${props => props.talking ? colors.secondaryDark : colors.primaryLight};
 `;
 
@@ -52,7 +52,7 @@ const PlayerName = styled.button`
   grid-row: 1;
   justify-self: stretch;
   align-self: stretch;
-  font-size: 1.2rem;
+  font-size: 1.9rem;
   color: ${colors.white};
 `;
 
@@ -65,7 +65,7 @@ const PlayerRole = styled.h3<PlayerRoleProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: .9rem;
+  font-size: 1.4rem;
   color: ${colors.white};
   opacity: ${props => props.displayRole ? 1 : 0};
   transition: opacity .3s;

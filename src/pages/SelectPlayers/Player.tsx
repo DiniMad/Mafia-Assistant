@@ -48,7 +48,8 @@ const PlayerComponent = styled.div<PlayerItemProps>`
   grid-template-columns: 6fr 1fr;
   justify-content: center;
   align-items: center;
-  margin: .4rem;
+  margin: .6rem;
+  height: 4rem;
   background-color: ${
           props => props.selected ?
                   props.dragging ? colors.secondaryDark : colors.secondary
@@ -60,7 +61,7 @@ const PlayerName = styled.h1`
   grid-column: 1/3;
   grid-row: 1;
   justify-self: center;
-  font-size: 1.2rem;
+  font-size: 1.9rem;
   color: ${colors.white};
 `;
 
@@ -81,13 +82,12 @@ const DragHandle = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: .2rem;
-  width: 2rem;
-  height: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
   background-color: ${colors.primary};
 
   svg {
-    font-size: 1.2rem;
+    font-size: 1.9rem;
     color: ${colors.white};
   }
 `;

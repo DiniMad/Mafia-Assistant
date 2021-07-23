@@ -25,12 +25,12 @@ type StartGameButtonProps = {
     background: string,
 }
 const StartGameButton = styled.button<StartGameButtonProps>`
-  font-size: 1.4rem;
+  font-size: 2.25rem;
   font-weight: bold;
   color: ${colors.white};
-  border-radius: 1rem;
-  padding: .6rem 1.5rem;
-  margin: 1rem;
+  border-radius: 1.6rem;
+  padding: 1rem 2.4rem;
+  margin: 1.6rem;
   background-color: ${props => props.background};
 `;
 

@@ -33,7 +33,7 @@ export const PageTitle = styled.h1`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 3.2rem;
   color: ${colors.white};
   background-color: ${colors.primary};
 `;
@@ -47,7 +47,7 @@ const Menu = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 .5rem;
+  padding: 0 .8rem;
   background-color: ${colors.primary};
 `;
 
