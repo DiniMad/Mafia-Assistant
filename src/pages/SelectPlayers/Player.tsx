@@ -48,7 +48,7 @@ const PlayerComponent = styled.div<PlayerItemProps>`
   grid-template-columns: 6fr 1fr;
   justify-content: center;
   align-items: center;
-  margin: .5rem;
+  margin: .4rem;
   background-color: ${
           props => props.selected ?
                   props.dragging ? colors.secondaryDark : colors.secondary
