@@ -31,6 +31,7 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
 type GameplayContextType = [Gameplay, Dispatch<GameplayAction>]
 export const GameplayContext = createContext<GameplayContextType>({} as GameplayContextType);
 export const GameplayProvider: FC = ({children}) => {
+    // TODO: Initialize the players from the persistent storage.
     const initialState: Gameplay = {
         players: [],
         displayRoles: false,

@@ -1,16 +1,17 @@
 import React, {createContext, Dispatch, FC, useReducer} from "react";
-import Player, {mockPlayers} from "../types/Player";
+import {PersistentPlayer} from "../types/PersistentData";
+import {v4 as uuid} from "uuid";
 
 type SelectPlayerAction = {
     type: "SELECT_PLAYER",
-    payload: Player["id"]
+    payload: PersistentPlayer["id"]
 }
 type ReorderPlayerAction = {
     type: "REORDER_PLAYER",
-    payload: Player[]
+    payload: PersistentPlayer[]
 }
 type PlayerAction = SelectPlayerAction | ReorderPlayerAction
-const reducer = (state: Player[], action: PlayerAction) => {
+const reducer = (state: PersistentPlayer[], action: PlayerAction) => {
     if (action.type === "SELECT_PLAYER") {
         return state.map(player =>
             player.id === action.payload ?
@@ -26,7 +27,7 @@ const reducer = (state: Player[], action: PlayerAction) => {
     return mockPlayers;
 };
 
-type PlayerContextType = [Player[], Dispatch<PlayerAction>];
+type PlayerContextType = [PersistentPlayer[], Dispatch<PlayerAction>];
 export const PlayersContext = createContext<PlayerContextType>({} as PlayerContextType);
 export const PlayersProvider: FC = ({children}) => {
     const initialState = mockPlayers.sort((p1, p2) => {
@@ -42,3 +43,26 @@ export const PlayersProvider: FC = ({children}) => {
 };
 
 export default PlayersContext;
+
+
+// TODO: Replace the below mock implementation with the persistent storage data 
+const selectedGenerator = () => Math.random() > .5;
+const mockPlayers: PersistentPlayer[] = [
+    {name: "سید محمد", id: uuid(), selected: selectedGenerator()},
+    {name: "سید علی", id: uuid(), selected: selectedGenerator()},
+    {name: "سید مجتبی", id: uuid(), selected: selectedGenerator()},
+    {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    // {name: "سید علی میری", id: uuid(), selected: selectedGenerator()},
+    {name: "دایی", id: uuid(), selected: selectedGenerator()},
+    {name: "آقا محسن", id: uuid(), selected: selectedGenerator()},
+    {name: "آقا محمد", id: uuid(), selected: selectedGenerator()},
+    {name: "سید حسین", id: uuid(), selected: selectedGenerator()},
+];

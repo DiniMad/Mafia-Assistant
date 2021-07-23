@@ -1,24 +1,14 @@
-import Player from "./Player";
+import {ExclusivePersistentProperties, PersistentPlayer, PersistentPlayerRole} from "./PersistentData";
+import {PLAYER_ROLES} from "../initial-configs";
 
-type PlayerRole = {
-    name: string,
-    shortName: string,
+export type GameplayPlayerRole = Omit<PersistentPlayerRole, keyof ExclusivePersistentProperties | "variety"> & {
+    revealed: boolean,
 }
-const PlayerRoles: PlayerRole[] = [
-    {name: "رئیس مافیا", shortName: "رئیس"},
-    {name: "مذاکره کننده", shortName: "مذاکره"},
-    {name: "مافیا ساده", shortName: "مافیا"},
-    {name: "کاراگاه", shortName: "کاراگاه"},
-    {name: "پزشک", shortName: "پزشک"},
-    {name: "تیرانداز", shortName: "تیرانداز"},
-    {name: "زره پوش", shortName: "زره"},
-    {name: "شهروند ساده", shortName: "شهروند"},
-];
 
-export type GameplayPlayer = Omit<Player, "selected"> & {
+export type GameplayPlayer = Omit<PersistentPlayer, keyof ExclusivePersistentProperties> & {
     talked: boolean,
     talking: boolean,
-    role: PlayerRole
+    role: GameplayPlayerRole
 }
 
 export type Gameplay = {
@@ -27,13 +17,16 @@ export type Gameplay = {
 }
 
 // TODO: Remove the mock initialization.
-export const generatePlayers = (players: Player[]) => {
+export const generatePlayers = (players: PersistentPlayer[]) => {
     return players.map((player, index) => {
         const gameplayPlayer: GameplayPlayer = {
             ...player,
             talked: index < 3,
             talking: index === 3,
-            role: PlayerRoles[Math.floor(Math.random() * PlayerRoles.length)],
+            role: {
+                ...PLAYER_ROLES[Math.floor(Math.random() * PLAYER_ROLES.length)]
+                , revealed: false,
+            },
         };
         return gameplayPlayer;
     });

@@ -4,12 +4,12 @@ import {colors} from "../../utilities";
 import {Draggable} from "react-beautiful-dnd";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowsAltV} from "@fortawesome/free-solid-svg-icons";
-import PlayerType from "../../types/Player";
+import {PersistentPlayer} from "../../types/PersistentData";
 import PlayersContext from "../../contexts/PlayersContext";
 
 type Props = {
     index: number,
-    player: PlayerType
+    player: PersistentPlayer
 }
 const Player = ({index, player}: Props) => {
     const [, dispatch] = useContext(PlayersContext);
