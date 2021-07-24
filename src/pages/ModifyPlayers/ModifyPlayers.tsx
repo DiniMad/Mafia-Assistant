@@ -7,9 +7,13 @@ import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {PersistentPlayersContext} from "../../contexts/PersistentPlayersContext";
 import Player from "./Player";
 import NewPlayer from "./NewPlayer";
+import {useHistory} from "react-router-dom";
 
 const ModifyPlayers = () => {
     const [players] = useContext(PersistentPlayersContext);
+    const history=useHistory()
+    
+    const backButtonClicked=()=>history.goBack();
 
     return (
         <PageLayout pageTitle={"ویرایش بازیکنان"}>
@@ -23,7 +27,7 @@ const ModifyPlayers = () => {
                             <NewPlayer/>
                         </Content>,
                     menuContent:
-                        <MenuButton>
+                        <MenuButton onClick={backButtonClicked}>
                             <FontAwesomeIcon icon={faArrowLeft}/>
                         </MenuButton>,
                 };
