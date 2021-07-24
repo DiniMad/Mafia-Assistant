@@ -2,17 +2,21 @@ import React, {useContext} from "react";
 import PageLayout from "../../components/PageLayout";
 import Role from "./Role";
 import styled from "styled-components";
-import {colors} from "../../utilities";
+import {colors, routes} from "../../utilities";
 import {PersistentRolesContext} from "../../contexts/PersistentRolesContext";
 import useRoleState from "./hooks/useRoleState";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faTheaterMasks} from "@fortawesome/free-solid-svg-icons";
 import Status from "./Status";
+import {Link, useHistory} from "react-router-dom";
 
 
 const SelectRoles = () => {
     const [roles] = useContext(PersistentRolesContext);
     const {statuses, isSelectionValid, error} = useRoleState();
+    const history = useHistory();
+
+    const onRevealRolesButtonClicked = () => history.push(routes.revealRoles);
 
     return (
         <PageLayout pageTitle={"انتخاب نقش ها"}>
@@ -25,11 +29,13 @@ const SelectRoles = () => {
                         </Content>,
                     menuContent:
                         <>
-                            <MenuButton>
+                            <MenuButton as={Link} to={routes.selectPlayers}>
                                 <FontAwesomeIcon icon={faArrowLeft}/>
                             </MenuButton>
                             <TextSpan disappear={isSelectionValid}>{error}</TextSpan>
-                            <MenuButton highlightColor={isSelectionValid} disabled={!isSelectionValid}>
+                            <MenuButton highlight={isSelectionValid}
+                                        disabled={!isSelectionValid}
+                                        onClick={onRevealRolesButtonClicked}>
                                 <FontAwesomeIcon icon={faTheaterMasks}/>
                             </MenuButton>
                         </>,
@@ -60,15 +66,18 @@ const Roles = styled.div`
 `;
 
 type MenuButtonProps = {
-    highlightColor?: boolean
+    highlight?: boolean
 }
 const MenuButton = styled.button<MenuButtonProps>`
+  display: flex;
   font-size: 1.9rem;
   font-weight: bold;
+  justify-content: center;
+  align-items: center;
   color: ${colors.white};
   width: 4rem;
   height: 4rem;
-  background-color: ${props => props.highlightColor ? colors.secondary : "transparent"};
+  background-color: ${props => props.highlight ? colors.secondary : "transparent"};
   transition: background-color .5s;
 `;
 
