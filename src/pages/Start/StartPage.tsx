@@ -1,13 +1,20 @@
 import React from "react";
 import styled from "styled-components";
-import {colors} from "../../utilities";
+import {colors, routes} from "../../utilities";
+import {Link} from "react-router-dom";
 
 const StartPage = () => {
     return (
         <StartPageComponent>
-            <StartGameButton background={colors.secondary}>{"شروع بازی"}</StartGameButton>
-            <StartGameButton background={colors.primary}>{"ویرایش بازیکنان"}</StartGameButton>
-            <StartGameButton background={colors.primary}>{"تنظیمات بازی"}</StartGameButton>
+            <StartGameButton background={colors.secondary} to={routes.selectPlayers}>
+                {"شروع بازی"}
+            </StartGameButton>
+            <StartGameButton background={colors.primary} to={routes.modifyPlayers}>
+                {"ویرایش بازیکنان"}
+            </StartGameButton>
+            <StartGameButton background={colors.primary} to={"#"}>
+                {"تنظیمات بازی"}
+            </StartGameButton>
         </StartPageComponent>
     );
 };
@@ -24,7 +31,7 @@ const StartPageComponent = styled.div`
 type StartGameButtonProps = {
     background: string,
 }
-const StartGameButton = styled.button<StartGameButtonProps>`
+const StartGameButton = styled(Link)<StartGameButtonProps>`
   font-size: 2.25rem;
   font-weight: bold;
   color: ${colors.white};
