@@ -9,7 +9,11 @@ type SetPlayersGameplayAction = {
 type DisplayRolesGameplayAction = {
     type: "TOGGLE_DISPLAY_ROLES",
 }
-type GameplayAction = SetPlayersGameplayAction | DisplayRolesGameplayAction;
+type RevealRoleGameplayAction = {
+    type: "REVEAL_ROLE",
+    payload: GameplayPlayer["id"]
+}
+type GameplayAction = SetPlayersGameplayAction | DisplayRolesGameplayAction | RevealRoleGameplayAction;
 const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "SET_PLAYERS") {
         return {
@@ -22,6 +26,25 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
         return {
             ...state,
             displayRoles: !state.displayRoles,
+        };
+    }
+
+    if (action.type === "REVEAL_ROLE") {
+        const players = state.players.map(player => {
+            if (player.id === action.payload)
+                return {
+                    ...player,
+                    role: {
+                        ...player.role,
+                        revealed: true,
+                    },
+                };
+            return player;
+        });
+
+        return {
+            ...state,
+            players,
         };
     }
 
