@@ -43,6 +43,10 @@ const GlobalStyle = createGlobalStyle`
     font-size: 10px;
   }
 
+  a{
+    text-decoration: none;
+  }
+  
   button {
     outline: none;
     border: none;
