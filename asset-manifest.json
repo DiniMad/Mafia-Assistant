@@ -1,19 +1,20 @@
 {
   "files": {
-    "main.js": "/Mafia-Assistant/static/js/main.3ac2b52b.chunk.js",
-    "main.js.map": "/Mafia-Assistant/static/js/main.3ac2b52b.chunk.js.map",
-    "runtime-main.js": "/Mafia-Assistant/static/js/runtime-main.ca62f1c4.js",
-    "runtime-main.js.map": "/Mafia-Assistant/static/js/runtime-main.ca62f1c4.js.map",
-    "static/js/2.339fb323.chunk.js": "/Mafia-Assistant/static/js/2.339fb323.chunk.js",
-    "static/js/2.339fb323.chunk.js.map": "/Mafia-Assistant/static/js/2.339fb323.chunk.js.map",
-    "static/js/3.acdc91eb.chunk.js": "/Mafia-Assistant/static/js/3.acdc91eb.chunk.js",
-    "static/js/3.acdc91eb.chunk.js.map": "/Mafia-Assistant/static/js/3.acdc91eb.chunk.js.map",
-    "index.html": "/Mafia-Assistant/index.html",
-    "static/js/2.339fb323.chunk.js.LICENSE.txt": "/Mafia-Assistant/static/js/2.339fb323.chunk.js.LICENSE.txt"
+    "main.js": "/mafia-assistant/static/js/main.cb825062.chunk.js",
+    "main.js.map": "/mafia-assistant/static/js/main.cb825062.chunk.js.map",
+    "runtime-main.js": "/mafia-assistant/static/js/runtime-main.d850562c.js",
+    "runtime-main.js.map": "/mafia-assistant/static/js/runtime-main.d850562c.js.map",
+    "static/js/2.5b73b9a3.chunk.js": "/mafia-assistant/static/js/2.5b73b9a3.chunk.js",
+    "static/js/2.5b73b9a3.chunk.js.map": "/mafia-assistant/static/js/2.5b73b9a3.chunk.js.map",
+    "static/js/3.91e38872.chunk.js": "/mafia-assistant/static/js/3.91e38872.chunk.js",
+    "static/js/3.91e38872.chunk.js.map": "/mafia-assistant/static/js/3.91e38872.chunk.js.map",
+    "index.html": "/mafia-assistant/index.html",
+    "static/js/2.5b73b9a3.chunk.js.LICENSE.txt": "/mafia-assistant/static/js/2.5b73b9a3.chunk.js.LICENSE.txt",
+    "static/media/Background.d85e110c.png": "/mafia-assistant/static/media/Background.d85e110c.png"
   },
   "entrypoints": [
-    "static/js/runtime-main.ca62f1c4.js",
-    "static/js/2.339fb323.chunk.js",
-    "static/js/main.3ac2b52b.chunk.js"
+    "static/js/runtime-main.d850562c.js",
+    "static/js/2.5b73b9a3.chunk.js",
+    "static/js/main.cb825062.chunk.js"
   ]
 }
