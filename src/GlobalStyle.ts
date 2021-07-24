@@ -1,4 +1,36 @@
-import {createGlobalStyle} from "styled-components";
+import {createGlobalStyle, css} from "styled-components";
+import {colors} from "./utilities";
+import {colorWithOpacity} from "./utilities";
+
+const ModalStyles = css`
+  .ReactModal__Overlay {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    background-color: ${colorWithOpacity(colors.primaryDark, .8)} !important;
+
+    .ReactModal__Content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: static !important;
+      border: ${colors.primaryLight} solid .3rem !important;
+      height: fit-content !important;
+      background-color: ${colors.primary} !important;
+    }
+  }
+
+  .ReactModal__Overlay--after-open {
+    opacity: 1;
+  }
+
+  .ReactModal__Overlay--before-close {
+    opacity: 0;
+  }
+`;
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -16,6 +48,8 @@ const GlobalStyle = createGlobalStyle`
     border: none;
     background-color: transparent;
   }
+
+  ${ModalStyles}
 `;
 
 export default GlobalStyle;
