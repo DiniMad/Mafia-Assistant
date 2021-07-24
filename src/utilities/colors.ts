@@ -1,4 +1,4 @@
-const colors = {
+export const colors = {
     primary: "#272727",
     primaryDark: "#000000",
     primaryLight: "#333333",
@@ -12,5 +12,3 @@ export const colorWithOpacity = (color: string, opacity: number) => {
     const opacityHex = (Math.floor(255 * opacity)).toString(16);
     return `${color}${opacityHex}`;
 };
-
-export default colors;
