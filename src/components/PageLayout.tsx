@@ -29,21 +29,22 @@ const PageLayoutComponent = styled.div`
 `;
 
 export const PageTitle = styled.h1`
-  flex: 1;
+  height: 8vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 3.2rem;
   color: ${colors.white};
+  border-bottom: ${colors.primaryDark} solid .3rem;
   background-color: ${colors.primary};
 `;
 
 const Content = styled.div`
-  flex: 10;
+  height: 84vh;
 `;
 
 const Menu = styled.div`
-  flex: 1;
+  height: 8vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
