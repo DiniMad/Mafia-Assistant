@@ -1,15 +1,17 @@
 import React, {useContext, useEffect, useState} from "react";
 import PageLayout from "../../components/PageLayout";
 import styled, {keyframes} from "styled-components";
-import {colors} from "../../utilities";
+import {colors, routes} from "../../utilities";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faUndo, faComments} from "@fortawesome/free-solid-svg-icons";
 import useInitializePlayers from "./hooks/useInitializePlayers";
 import {GameplayContext} from "../../contexts/GameplayContext";
 import Player from "./Player";
+import {Link, useHistory} from "react-router-dom";
 
 
 const RevealRoles = () => {
+    const history = useHistory();
     const [{players}, dispatch] = useContext(GameplayContext);
     const [initialPlayers, shuffleRoles] = useInitializePlayers();
     const [reshuffleClasses, setReshuffleClasses] = useState<"animation" | undefined>(undefined);
@@ -27,6 +29,7 @@ const RevealRoles = () => {
         setReshuffleClasses("animation");
     };
     const onReshuffleAnimationEnded = () => setReshuffleClasses(undefined);
+    const onTalkRoomButtonClicked = () => history.push(routes.talkRoom);
 
     return (
         <PageLayout pageTitle={"اطلاق نقش"}>
@@ -36,20 +39,22 @@ const RevealRoles = () => {
                         <Players>
                             {players.map(player => <Player key={player.id} {...player}/>)}
                         </Players>,
-                    menuContent: 
+                    menuContent:
                         <>
-                        <MenuButton>
-                            <FontAwesomeIcon icon={faArrowLeft}/>
-                        </MenuButton>
-                        <MenuButton onClick={onReshuffleButtonClicked}>
-                            <FontAwesomeIcon icon={faUndo}
-                                             className={reshuffleClasses}
-                                             onAnimationEnd={onReshuffleAnimationEnded}/>
-                        </MenuButton>
-                        <MenuButton highlightColor={allRolesRevealed}>
-                            <FontAwesomeIcon icon={faComments}/>
-                        </MenuButton>
-                    </>,
+                            <MenuButton as={Link} to={routes.selectRoles}>
+                                <FontAwesomeIcon icon={faArrowLeft}/>
+                            </MenuButton>
+                            <MenuButton onClick={onReshuffleButtonClicked}>
+                                <FontAwesomeIcon icon={faUndo}
+                                                 className={reshuffleClasses}
+                                                 onAnimationEnd={onReshuffleAnimationEnded}/>
+                            </MenuButton>
+                            <MenuButton highlight={allRolesRevealed}
+                                        disabled={!allRolesRevealed}
+                                        onClick={onTalkRoomButtonClicked}>
+                                <FontAwesomeIcon icon={faComments}/>
+                            </MenuButton>
+                        </>,
                 };
             }}
         </PageLayout>
@@ -68,15 +73,18 @@ const Players = styled.div`
 `;
 
 type MenuButtonProps = {
-    highlightColor?: boolean
+    highlight?: boolean
 }
 const MenuButton = styled.button<MenuButtonProps>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 1.9rem;
   font-weight: bold;
   color: ${colors.white};
   width: 4rem;
   height: 4rem;
-  background-color: ${props => props.highlightColor ? colors.secondary : "transparent"};
+  background-color: ${props => props.highlight ? colors.secondary : "transparent"};
 
   svg.animation {
     animation: ${keyframes`
