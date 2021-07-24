@@ -6,9 +6,9 @@ import {PersistentRolesContext} from "../../contexts/PersistentRolesContext";
 import useInputNumber from "./hooks/useInputNumber";
 
 type Props = Omit<PersistentPlayerRole, "shortName">
-const Role = ({name, side, selected, variety}: Props) => {
+const Role = ({name, side, selected, variety,count}: Props) => {
     const [, dispatch] = useContext(PersistentRolesContext);
-    const {result: inputValue, ...inputProperties} = useInputNumber({initialValue: 1, minimum: 1, maximum: 999});
+    const {result: inputValue, ...inputProperties} = useInputNumber({initialValue: count, minimum: 1, maximum: 999});
 
     useEffect(() => setRoleCount(), [inputValue]);
 
