@@ -7,9 +7,17 @@ export type PersistentPlayer = ExclusivePersistentProperties & {
     name: string,
 }
 
-export type PersistentPlayerRole = ExclusivePersistentProperties & {
-    name: string,
-    shortName: string,
-    side: "Mafia" | "Citizen",
-    variety: "One" | "Many",
+type PersistentPlayerRoleVarietyOne = {
+    readonly variety: "One",
+    readonly count: 1,
+}
+type PersistentPlayerRoleVarietyMany = {
+    readonly variety: "Many",
+    count: number,
+}
+export type PersistentPlayerRoleVariety = PersistentPlayerRoleVarietyOne | PersistentPlayerRoleVarietyMany;
+export type PersistentPlayerRole = ExclusivePersistentProperties & PersistentPlayerRoleVariety & {
+    readonly name: string,
+    readonly shortName: string,
+    readonly side: "Mafia" | "Citizen",
 }
