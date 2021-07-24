@@ -33,10 +33,11 @@ const RevealRoles = () => {
             {() => {
                 return {
                     content:
-                        <PlayersComponent>
+                        <Players>
                             {players.map(player => <Player key={player.id} {...player}/>)}
-                        </PlayersComponent>,
-                    menuContent: <>
+                        </Players>,
+                    menuContent: 
+                        <>
                         <MenuButton>
                             <FontAwesomeIcon icon={faArrowLeft}/>
                         </MenuButton>
@@ -55,13 +56,15 @@ const RevealRoles = () => {
     );
 };
 
-const PlayersComponent = styled.div`
+const Players = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   overflow-y: scroll;
   overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 `;
 
 type MenuButtonProps = {
