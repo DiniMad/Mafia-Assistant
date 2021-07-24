@@ -4,13 +4,13 @@ import {colors} from "../../utilities";
 import {GameplayContext} from "../../contexts/GameplayContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTheaterMasks, faHandPaper} from "@fortawesome/free-solid-svg-icons";
-import {colorWithOpacity} from "../../utilities/colors";
-import Players from "./Players";
+import {colorWithOpacity} from "../../utilities";
 import PageLayout from "../../components/PageLayout";
+import Player from "./Player";
 
 
 const TalkRoom = () => {
-    const [{displayRoles}, dispatch] = useContext(GameplayContext);
+    const [{players, displayRoles}, dispatch] = useContext(GameplayContext);
 
     const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES"});
 
@@ -18,22 +18,41 @@ const TalkRoom = () => {
         <PageLayout pageTitle={"گفتگو"}>
             {() => {
                 return {
-                    content: <Players/>,
-                    menuContent: <>
-                        <ToggleRolesButton displayRoles={displayRoles} onClick={toggleDisplayRoles}>
-                            <FontAwesomeIcon icon={faTheaterMasks}/>
-                        </ToggleRolesButton>
-                        <VoteButton>
-                            <FontAwesomeIcon icon={faHandPaper}/>
-                            <FontAwesomeIcon icon={faHandPaper}/>
-                            <FontAwesomeIcon icon={faHandPaper}/>
-                        </VoteButton>
-                    </>,
+                    content:
+                        <Players>
+                            {players.map(player =>
+                                <Player key={player.id}
+                                        player={player}
+                                        displayRole={displayRoles}
+                                        timeToTalk={player.talking ? "30" : undefined}/>)}
+                        </Players>,
+                    menuContent:
+                        <>
+                            <ToggleRolesButton displayRoles={displayRoles} onClick={toggleDisplayRoles}>
+                                <FontAwesomeIcon icon={faTheaterMasks}/>
+                            </ToggleRolesButton>
+                            <VoteButton>
+                                <FontAwesomeIcon icon={faHandPaper}/>
+                                <FontAwesomeIcon icon={faHandPaper}/>
+                                <FontAwesomeIcon icon={faHandPaper}/>
+                            </VoteButton>
+                        </>,
                 };
             }}
         </PageLayout>
     );
 };
+
+export const Players = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
+`;
 
 type ToggleRolesButtonProps = {
     displayRoles: boolean
