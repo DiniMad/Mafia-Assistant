@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import styled from "styled-components";
-import {colors} from "../../utilities";
+import {colors, routes} from "../../utilities";
 import Players from "./Players";
 import PageLayout from "../../components/PageLayout";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -13,13 +13,15 @@ import {
     faUserEdit,
 } from "@fortawesome/free-solid-svg-icons";
 import {PersistentPlayersContext} from "../../contexts/PersistentPlayersContext";
+import {Link, useHistory} from "react-router-dom";
 
 const SelectPlayers = () => {
+    const history = useHistory();
     const [players] = useContext(PersistentPlayersContext);
     const MINIMUM_PLAYERS_COUNT = 6 as const;
     const playersCountAllowed = players.filter(player => player.selected).length >= MINIMUM_PLAYERS_COUNT;
 
-    const onSelectRolesPageButtonClicked = () => console.log("SelectRoles");
+    const onSelectRolesPageButtonClicked = () => history.push(routes.selectRoles);
 
     return (
         <PageLayout pageTitle={"انتخاب بازیکنان"}>
@@ -28,10 +30,10 @@ const SelectPlayers = () => {
                     return {
                         content: <Players/>,
                         menuContent: <>
-                            <MenuButton>
+                            <MenuButton as={Link} to={routes.start}>
                                 <FontAwesomeIcon icon={faArrowLeft}/>
                             </MenuButton>
-                            <MenuButton>
+                            <MenuButton as={Link} to={routes.modifyPlayers}>
                                 <FontAwesomeIcon icon={faUserEdit}/>
                             </MenuButton>
                             <MenuButton highlight={playersCountAllowed}
