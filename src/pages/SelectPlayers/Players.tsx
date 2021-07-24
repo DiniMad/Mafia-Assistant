@@ -46,6 +46,8 @@ export const PlayersComponent = styled.div`
   align-items: stretch;
   overflow-y: scroll;
   overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 `;
 
 export default Players;
