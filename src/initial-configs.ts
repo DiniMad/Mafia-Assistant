@@ -1,4 +1,5 @@
 import {PersistentPlayerRole} from "./types/PersistentData";
+import {Config} from "./types/Gameplay";
 
 export const PLAYER_ROLES: PersistentPlayerRole[] = [
     {name: "رئیس مافیا", shortName: "رئیس", side: "Mafia", variety: "One", selected: false, count: 1},
@@ -10,3 +11,9 @@ export const PLAYER_ROLES: PersistentPlayerRole[] = [
     {name: "زره پوش", shortName: "زره", side: "Citizen", variety: "One", selected: false, count: 1},
     {name: "شهروند ساده", shortName: "شهروند", side: "Citizen", variety: "Many", selected: false, count: 1},
 ];
+
+export const CONFIG: Config = {
+    talkTime: 30,
+    challengeTime: 15,
+    defenseTime: 45,
+};

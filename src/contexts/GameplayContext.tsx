@@ -1,5 +1,6 @@
 import React, {createContext, Dispatch, FC, useReducer} from "react";
 import {Gameplay, GameplayPlayer} from "../types/Gameplay";
+import {CONFIG} from "../initial-configs";
 
 type SetPlayersGameplayAction = {
     type: "SET_PLAYERS",
@@ -12,7 +13,15 @@ type RevealRoleGameplayAction = {
     type: "REVEAL_ROLE",
     payload: GameplayPlayer["id"]
 }
-type GameplayAction = SetPlayersGameplayAction | DisplayRolesGameplayAction | RevealRoleGameplayAction;
+type ToggleActiveGameplayAction = {
+    type: "TOGGLE_ACTIVE",
+    payload: GameplayPlayer["id"]
+}
+type GameplayAction =
+    SetPlayersGameplayAction |
+    DisplayRolesGameplayAction |
+    RevealRoleGameplayAction |
+    ToggleActiveGameplayAction;
 const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "SET_PLAYERS") {
         return {
@@ -47,6 +56,22 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
         };
     }
 
+    if (action.type === "TOGGLE_ACTIVE") {
+        const players = state.players.map(player => {
+            if (player.id === action.payload)
+                return {
+                    ...player,
+                    active: !player.active,
+                };
+            return player;
+        });
+
+        return {
+            ...state,
+            players,
+        };
+    }
+
     return state;
 };
 
@@ -56,6 +81,7 @@ export const GameplayProvider: FC = ({children}) => {
     const initialState: Gameplay = {
         players: [],
         displayRoles: false,
+        config: CONFIG,
     };
     const [state, dispatch] = useReducer(reducer, initialState);
 

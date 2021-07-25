@@ -5,12 +5,20 @@ export type GameplayPlayerRole = Omit<PersistentPlayerRole, keyof ExclusivePersi
 }
 
 export type GameplayPlayer = Omit<PersistentPlayer, keyof ExclusivePersistentProperties> & {
+    role: GameplayPlayerRole,
+    active: boolean,
     talked: boolean,
     talking: boolean,
-    role: GameplayPlayerRole
+}
+
+export type Config = {
+    talkTime: number,
+    challengeTime: number,
+    defenseTime: number
 }
 
 export type Gameplay = {
     players: GameplayPlayer[],
     displayRoles: boolean,
+    config: Config,
 }

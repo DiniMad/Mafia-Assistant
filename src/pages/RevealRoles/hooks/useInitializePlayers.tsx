@@ -35,6 +35,7 @@ const initializeGameplayPlayers = (players: PersistentPlayer[], roles: GameplayP
             return {
                 ...player,
                 role: roles[index],
+                active:true,
                 talking: false,
                 talked: false,
             };
