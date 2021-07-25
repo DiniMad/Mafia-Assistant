@@ -1,6 +1,7 @@
 import React, {createContext, Dispatch, FC, useReducer} from "react";
 import {Gameplay, GameplayPlayer} from "../types/Gameplay";
 import {CONFIG} from "../initial-configs";
+import {useStorageReducer} from "react-storage-hooks";
 
 type SetPlayersGameplayAction = {
     type: "SET_PLAYERS",
@@ -83,7 +84,7 @@ export const GameplayProvider: FC = ({children}) => {
         displayRoles: false,
         config: CONFIG,
     };
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [state, dispatch] = useStorageReducer(localStorage, "GAMEPLAY",reducer, initialState);
 
     return (
         <GameplayContext.Provider value={[state, dispatch]}>
