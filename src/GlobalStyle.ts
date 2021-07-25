@@ -1,6 +1,5 @@
 import {createGlobalStyle, css} from "styled-components";
-import {colors} from "./utilities";
-import {colorWithOpacity} from "./utilities";
+import {colors, colorWithOpacity} from "./utilities";
 
 const ModalStyles = css`
   .ReactModal__Overlay {
@@ -41,12 +40,13 @@ const GlobalStyle = createGlobalStyle`
 
   html, body {
     font-size: 10px;
+    overscroll-behavior-y: contain;
   }
 
-  a{
+  a {
     text-decoration: none;
   }
-  
+
   button {
     outline: none;
     border: none;
