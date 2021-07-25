@@ -29,7 +29,7 @@ const PageLayoutComponent = styled.div`
 `;
 
 export const PageTitle = styled.h1`
-  height: 8vh;
+  height: 8%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,11 +40,11 @@ export const PageTitle = styled.h1`
 `;
 
 const Content = styled.div`
-  height: 84vh;
+  height: 84%;
 `;
 
 const Menu = styled.div`
-  height: 8vh;
+  height: 8%;
   display: flex;
   justify-content: space-between;
   align-items: center;

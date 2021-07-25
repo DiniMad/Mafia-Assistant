@@ -6,6 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTheaterMasks} from "@fortawesome/free-solid-svg-icons";
 import Modal from "react-modal";
 import {GameplayContext} from "../../contexts/GameplayContext";
+import {vh, vw} from "../../utilities";
 
 type Props = Pick<GameplayPlayer, "id" | "name" | "role">;
 const Player = ({id, name, role: {name: roleName, revealed}}: Props) => {
@@ -81,8 +82,8 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 30vh;
-  width: 50vw;
+  height: ${vh(30)};
+  width:  ${vw(50)};
 
   ${PlayerName} {
     font-size: 2.4rem;

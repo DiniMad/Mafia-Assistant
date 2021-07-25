@@ -10,6 +10,7 @@ import RevealRoles from "./pages/RevealRoles";
 import TalkRoom from "./pages/TalkRoom";
 import ModifyPlayers from "./pages/ModifyPlayers";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {vh, vw} from "./utilities";
 
 const App = () => {
     return (
@@ -30,10 +31,11 @@ const App = () => {
         </Router>
     );
 };
+
 const AppComponent = styled.div`
   overflow: hidden;
-  width: 100vw;
-  height: 100vh;
+  width: ${vw(100)};
+  height: ${vh(100)};
   background: ${colors.primaryDark} url(${assets.images.background}) no-repeat fixed center;
 `;
 
