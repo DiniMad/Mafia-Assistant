@@ -29,7 +29,13 @@ const RevealRoles = () => {
         setReshuffleClasses("animation");
     };
     const onReshuffleAnimationEnded = () => setReshuffleClasses(undefined);
-    const onTalkRoomButtonClicked = () => history.push(routes.talkRoom);
+    const onTalkRoomButtonClicked = () => {
+        dispatch({
+            type: "SET_TALK_QUEUE",
+            payload: [],
+        });
+        history.push(routes.talkRoom);
+    }
 
     return (
         <PageLayout pageTitle={"اطلاق نقش"}>
