@@ -33,12 +33,19 @@ type TalkQueueGameplayAction = {
         talk: Talk
     }
 }
+type ChallengesBeenUsedGameplayAction = {
+    type: "RESET_USED_CHALLENGES"
+} | {
+    type: "CHALLENGE_BEEN_USED",
+    payload: GameplayPlayer["id"]
+}
 type GameplayAction =
     SetPlayersGameplayAction |
     DisplayRolesGameplayAction |
     RevealRoleGameplayAction |
     TogglePlayerActiveGameplayAction |
-    TalkQueueGameplayAction;
+    TalkQueueGameplayAction |
+    ChallengesBeenUsedGameplayAction;
 const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "SET_PLAYERS") {
         return {
@@ -117,6 +124,23 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
         };
     }
 
+    if (action.type === "RESET_USED_CHALLENGES") {
+        return {
+            ...state,
+            playerChallengesBeenUsed: [],
+        };
+    }
+
+    if (action.type === "CHALLENGE_BEEN_USED") {
+        return {
+            ...state,
+            playerChallengesBeenUsed: [
+                ...state.playerChallengesBeenUsed,
+                action.payload,
+            ],
+        };
+    }
+
     return state;
 };
 
@@ -127,6 +151,7 @@ export const GameplayProvider: FC = ({children}) => {
         players: [],
         displayRoles: false,
         talkQueue: [],
+        playerChallengesBeenUsed: [],
         config: CONFIG,
     };
     const [state, dispatch] = useStorageReducer(localStorage, "GAMEPLAY", reducer, initialState);

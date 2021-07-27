@@ -38,6 +38,8 @@ const TalkRoom = () => {
 
         const firstPlayerToTalk = players.find(p => p.active && p.id === talkQueue.peak()?.playerId);
         setFirstPlayerToTalk(firstPlayerToTalk);
+
+        dispatch({type: "RESET_USED_CHALLENGES"});
     }, []);
 
     const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES"});

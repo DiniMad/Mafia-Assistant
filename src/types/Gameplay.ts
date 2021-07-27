@@ -25,4 +25,5 @@ export type Gameplay = {
     displayRoles: boolean,
     talkQueue: Talk[],
     config: Config,
+    playerChallengesBeenUsed: GameplayPlayer["id"][]
 }

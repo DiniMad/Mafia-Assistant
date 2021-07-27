@@ -21,7 +21,7 @@ const totalSeconds = (minutes: number, seconds: number) => minutes * 60 + second
 
 type Props = GameplayPlayer
 const useTalk = (player: Props) => {
-    const [{players, talkQueue, config}, dispatch] = useContext(GameplayContext);
+    const [{players, talkQueue, playerChallengesBeenUsed, config}, dispatch] = useContext(GameplayContext);
     const {restart, pause, resume, isRunning, minutes, seconds} = useTimer({
         autoStart: false,
         expiryTimestamp: calculateTalkTime(config, talkQueue.peak()),
@@ -71,6 +71,8 @@ const useTalk = (player: Props) => {
         if (!firstTalk || firstTalk.type !== "discus") return;
         const talkingPlayer = players.find(player => player.id === firstTalk.playerId);
         if (!talkingPlayer) return;
+        const playerChallengeBeenUsed = playerChallengesBeenUsed.includes(talkingPlayer.id);
+        if (playerChallengeBeenUsed) return;
 
         dispatch({
             type: "TALK_BEFORE",
@@ -82,6 +84,10 @@ const useTalk = (player: Props) => {
                 },
             },
         });
+        dispatch({
+            type: "CHALLENGE_BEEN_USED",
+            payload: talkingPlayer.id,
+        });
     };
     const onSideActionLongPress = () => {
         const playerIsTalking = talkQueue.playerIsFirstToTalk(player.id);
@@ -91,6 +97,8 @@ const useTalk = (player: Props) => {
         if (!firstTalk || firstTalk.type !== "discus") return;
         const talkingPlayer = players.find(player => player.id === firstTalk.playerId);
         if (!talkingPlayer) return;
+        const playerChallengeBeenUsed = playerChallengesBeenUsed.includes(talkingPlayer.id);
+        if (playerChallengeBeenUsed) return;
 
         dispatch({
             type: "TALK_AFTER",
@@ -102,6 +110,10 @@ const useTalk = (player: Props) => {
                 },
             },
         });
+        dispatch({
+            type: "CHALLENGE_BEEN_USED",
+            payload: talkingPlayer.id,
+        });
 
         toast.success("چالش بعد از صحبت بازیکن", {
             duration: 3000,
@@ -109,7 +121,7 @@ const useTalk = (player: Props) => {
                 fontSize: "1.9rem",
                 color: colors.white,
                 backgroundColor: colors.primaryLight,
-                border: `${colors.secondaryDark} solid .2rem`
+                border: `${colors.secondaryDark} solid .2rem`,
             },
             icon: null,
             position: "top-center",
