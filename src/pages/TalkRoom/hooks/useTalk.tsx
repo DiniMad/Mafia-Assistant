@@ -63,7 +63,7 @@ const useTalk = (player: Props) => {
         if (!player.active || playerIsTalking) return;
 
         const firstTalk = talkQueue.peak();
-        if (!firstTalk) return;
+        if (!firstTalk || firstTalk.type !== "discus") return;
         const talkingPlayer = players.find(player => player.id === firstTalk.playerId);
         if (!talkingPlayer) return;
 
