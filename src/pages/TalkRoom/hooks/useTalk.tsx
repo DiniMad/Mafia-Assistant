@@ -35,7 +35,7 @@ const useTalk = (player: Props) => {
         }
 
         restart(calculateTalkTime(config, talkQueue.peak()));
-    }, [talkQueue.length]);
+    }, [talkQueue.length, player.active]);
 
     function onTimeFinished() {
         if (!talkQueue.playerIsFirstToTalk(player.id)) return;
