@@ -1,47 +1,48 @@
 import {GameplayPlayer, Talk} from "./Gameplay";
 
-export class TalkQueue {
-    private get talks(): Talk[] {
-        return this._talks;
-    }
-    private set talks(value: Talk[]) {
-        this._talks = value;
-        this.length = value.length;
-    }
-    private _talks: Talk[] = [];
+declare global {
+    interface Array<T extends Talk> {
+        peak(index?: number): T | undefined;
 
-    length: number = 0;
+        dequeue(): Talk[];
 
-    constructor(talks: Talk[]) {
-        this.talks = talks;
+        insert(talk: Talk, index: number): Talk[];
+
+        insertBefore(talk: Talk, playerId: GameplayPlayer["id"]): Talk[];
+
+        playerIsFirstToTalk(playerId: GameplayPlayer["id"]): boolean;
+
+        playerAlreadyTalked(playerId: GameplayPlayer["id"]): boolean;
     }
-
-    static isAnInstance = (value: any): value is TalkQueue => value instanceof TalkQueue;
-    
-    peak = (index = 0): Talk | undefined => this.talks[index];
-    dequeue = (): TalkQueue => {
-        const newTalks = [...this.talks];
-        newTalks.shift();
-        return new TalkQueue(newTalks);
-    };
-    insertBefore = (playerId: GameplayPlayer["id"], talk: Talk): TalkQueue => {
-        const talkIndexToTalkBefore = this._talks.findIndex(t => t.playerId === playerId);
-        if (talkIndexToTalkBefore === -1) return this;
-        return this.insert(talk, talkIndexToTalkBefore);
-    };
-    playerIsFirstToTalk = (playerId: GameplayPlayer["id"]) => {
-        const firstTalk = this.peak();
-        if (!firstTalk) return false;
-        return firstTalk.playerId === playerId;
-    };
-    playerAlreadyTalked = (playerId: GameplayPlayer["id"]) => {
-        const playerTalkIndex = this._talks.findIndex(p => p.playerId === playerId && p.type === "discus");
-        return playerTalkIndex === -1;
-    };
-    
-    private insert = (talk: Talk, index: number): TalkQueue => {
-        const newTalks = [...this.talks];
-        newTalks.splice(index, 0, talk);
-        return new TalkQueue(newTalks);
-    };
 }
+
+Array.prototype.peak = function <T extends Talk>(this: T[], index = 0) {
+    return this[index];
+};
+Array.prototype.dequeue = function <T extends Talk>(this: T[]) {
+    const newTalks = [...this];
+    newTalks.shift();
+    return newTalks;
+};
+Array.prototype.insert = function <T extends Talk>(this: T[], talk: T, index: number) {
+    const newTalks = [...this];
+    newTalks.splice(index, 0, talk);
+    return newTalks;
+};
+Array.prototype.insertBefore = function <T extends Talk>(this: T[], talk: T, playerId: GameplayPlayer["id"]) {
+    const talkIndexToTalkBefore = this.findIndex(t => t.playerId === playerId);
+    if (talkIndexToTalkBefore === -1) return this;
+    return this.insert(talk, talkIndexToTalkBefore);
+};
+Array.prototype.playerIsFirstToTalk = function <T extends Talk>(this: T[], playerId: GameplayPlayer["id"]) {
+    const firstTalk = this.peak();
+    if (!firstTalk) return false;
+    return firstTalk.playerId === playerId;
+};
+Array.prototype.playerAlreadyTalked = function <T extends Talk>(this: T[], playerId: GameplayPlayer["id"]) {
+    const playerTalkIndex = this.findIndex(p => p.playerId === playerId && p.type === "discus");
+    return playerTalkIndex === -1;
+};
+
+export const initializeTalkQueueType = () => {
+};

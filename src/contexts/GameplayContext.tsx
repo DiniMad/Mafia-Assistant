@@ -2,7 +2,9 @@ import React, {createContext, Dispatch, FC} from "react";
 import {Gameplay, GameplayPlayer, Talk} from "../types/Gameplay";
 import {CONFIG} from "../initial-configs";
 import {useStorageReducer} from "react-storage-hooks";
-import {TalkQueue} from "../types/TalkQueue";
+import {initializeTalkQueueType} from "../types/TalkQueue";
+
+initializeTalkQueueType()
 
 type SetPlayersGameplayAction = {
     type: "SET_PLAYERS",
@@ -21,7 +23,7 @@ type TogglePlayerActiveGameplayAction = {
 }
 type TalkQueueGameplayAction = {
     type: "SET_TALK_QUEUE",
-    payload: Talk[] | TalkQueue
+    payload: Talk[]
 } | {
     type: "TALK_FINISHED",
 } | {
@@ -90,7 +92,7 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "SET_TALK_QUEUE") {
         return {
             ...state,
-            talkQueue: TalkQueue.isAnInstance(action.payload) ? action.payload : new TalkQueue(action.payload),
+            talkQueue: action.payload,
         };
     }
 
@@ -104,7 +106,7 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "TALK") {
         return {
             ...state,
-            talkQueue: state.talkQueue.insertBefore(action.payload.before, action.payload.talk),
+            talkQueue: state.talkQueue.insertBefore(action.payload.talk, action.payload.before),
         };
     }
 
@@ -117,7 +119,7 @@ export const GameplayProvider: FC = ({children}) => {
     const initialState: Gameplay = {
         players: [],
         displayRoles: false,
-        talkQueue: new TalkQueue([]),
+        talkQueue: [],
         config: CONFIG,
     };
     const [state, dispatch] = useStorageReducer(localStorage, "GAMEPLAY", reducer, initialState);

@@ -8,7 +8,6 @@ import PageLayout from "../../components/PageLayout";
 import Player from "./Player";
 import {GameplayPlayer, Talk} from "../../types/Gameplay";
 import NotificationModal from "../../types/NotificationModal";
-import {TalkQueue} from "../../types/TalkQueue";
 
 const initializeTalkQueue = (players: GameplayPlayer[], talkStarterPlayerIndex: number) => {
     const talks: Talk[] = [];
@@ -23,7 +22,7 @@ const initializeTalkQueue = (players: GameplayPlayer[], talkStarterPlayerIndex: 
         });
     }
 
-    return new TalkQueue(talks);
+    return talks;
 };
 
 const TalkRoom = () => {
@@ -31,7 +30,7 @@ const TalkRoom = () => {
     const talkStarterPlayerIndex = useRef(Math.floor(Math.random() * players.length));
     const [firstPlayerToTalk, setFirstPlayerToTalk] = useState<GameplayPlayer>();
     const [displayNotificationModal, setDisplayNotificationModal] = useState(true);
-    const [talkQueue, setTalkQueue] = useState<TalkQueue>(new TalkQueue([]));
+    const [talkQueue, setTalkQueue] = useState<Talk[]>([]);
 
     useEffect(() => {
         const talkQueue = initializeTalkQueue(players, talkStarterPlayerIndex.current);
@@ -41,7 +40,7 @@ const TalkRoom = () => {
         setFirstPlayerToTalk(firstPlayerToTalk);
     }, []);
 
-    const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES",});
+    const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES"});
     const modalStartClicked = () => {
         dispatch({
             type: "SET_TALK_QUEUE",
