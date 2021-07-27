@@ -10,8 +10,8 @@ export type GameplayPlayer = Omit<PersistentPlayer, keyof ExclusivePersistentPro
 }
 
 export type Talk = {
-    playerId: GameplayPlayer["id"],
-    type: "discus" | "challenge" | "defence",
+    readonly playerId: GameplayPlayer["id"],
+    readonly  type: "discus" | "challenge" | "defence",
 }
 
 export type Config = {
