@@ -13,7 +13,7 @@ const NewPlayer = () => {
 
     const newPlayerButtonClicked = () => {
         if (!newPlayerName) return;
-        
+
         dispatch({
             type: "ADD_PLAYER",
             payload: newPlayerName,
@@ -26,7 +26,10 @@ const NewPlayer = () => {
 
     return (
         <NewPlayerComponent>
-            <PlayerInput value={newPlayerName} onChange={newPlayerInputOnChange} ref={inputElement}/>
+            <PlayerInput value={newPlayerName}
+                         onChange={newPlayerInputOnChange}
+                         ref={inputElement}
+                         placeholder={"نام بازیکن"}/>
             <MenuButton onClick={newPlayerButtonClicked}>
                 <FontAwesomeIcon icon={faCheck}/>
             </MenuButton>
