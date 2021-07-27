@@ -13,8 +13,13 @@ type Props = {
 }
 const Player = ({player, displayRole}: Props) => {
     const [displayOptions, setDisplayOptions] = useState(false);
-    const {onClick, onSideActionClicked, talkTime} = useTalk(player);
+    const {onClick, onSideActionClicked, onSideActionLongPress, talkTime} = useTalk(player);
     const longPressProperties = useLongPress({delay: 300, onClick, onLongPress});
+    const sideActionButton = useLongPress({
+        delay: 300,
+        onClick: onSideActionClicked,
+        onLongPress: onSideActionLongPress,
+    });
     const {componentClasses, sideActionStatus} = useComponentState({player, talkTime});
 
     function onLongPress() {
@@ -25,7 +30,7 @@ const Player = ({player, displayRole}: Props) => {
         <PlayerComponent className={componentClasses}>
             <PlayerRole displayRole={displayRole}>{player.role.shortName}</PlayerRole>
             <PlayerName disabled={!player.active} {...longPressProperties}>{player.name}</PlayerName>
-            <SideAction disabled={sideActionStatus.disabled} onClick={onSideActionClicked}>
+            <SideAction disabled={sideActionStatus.disabled} {...sideActionButton}>
                 {sideActionStatus.text}
             </SideAction>
             <PlayerOptions display={displayOptions} setDisplay={setDisplayOptions} player={player}/>
@@ -70,6 +75,7 @@ const SideAction = styled.button`
   height: 3.5rem;
   width: 3.5rem;
   background-color: ${colors.primaryLight};
+  user-select: none;
 
   ${PlayerComponent}.de-active &, ${PlayerComponent}.talking & {
     background-color: transparent;

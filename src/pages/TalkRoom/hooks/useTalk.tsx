@@ -2,6 +2,8 @@ import React, {useContext, useEffect} from "react";
 import {useTimer} from "react-timer-hook";
 import {GameplayContext} from "../../../contexts/GameplayContext";
 import {Config, GameplayPlayer, Talk} from "../../../types/Gameplay";
+import toast from "react-hot-toast";
+import {colors} from "../../../utilities";
 
 const calculateTalkTime = (config: Config, talk?: Talk) => {
     if (!talk) return 0;
@@ -35,11 +37,14 @@ const useTalk = (player: Props) => {
         }
 
         restart(calculateTalkTime(config, talkQueue.peak()));
-    }, [talkQueue.length, player.active]);
+    }, [talkQueue.length, player.active, isRunning]);
 
     function onTimeFinished() {
         if (!talkQueue.playerIsFirstToTalk(player.id)) return;
         dispatch({type: "TALK_FINISHED"});
+
+        if (!talkQueue.playerIsFirstToTalk(player.id)) return;
+        restart(calculateTalkTime(config, talkQueue.peak()));
     }
 
     const onClick = () => {
@@ -68,9 +73,9 @@ const useTalk = (player: Props) => {
         if (!talkingPlayer) return;
 
         dispatch({
-            type: "TALK",
+            type: "TALK_BEFORE",
             payload: {
-                before: talkingPlayer.id,
+                playerId: talkingPlayer.id,
                 talk: {
                     playerId: player.id,
                     type: "challenge",
@@ -78,11 +83,44 @@ const useTalk = (player: Props) => {
             },
         });
     };
+    const onSideActionLongPress = () => {
+        const playerIsTalking = talkQueue.playerIsFirstToTalk(player.id);
+        if (!player.active || playerIsTalking) return;
+
+        const firstTalk = talkQueue.peak();
+        if (!firstTalk || firstTalk.type !== "discus") return;
+        const talkingPlayer = players.find(player => player.id === firstTalk.playerId);
+        if (!talkingPlayer) return;
+
+        dispatch({
+            type: "TALK_AFTER",
+            payload: {
+                playerId: talkingPlayer.id,
+                talk: {
+                    playerId: player.id,
+                    type: "challenge",
+                },
+            },
+        });
+
+        toast.success("چالش بعد از صحبت بازیکن", {
+            duration: 3000,
+            style: {
+                fontSize: "1.9rem",
+                color: colors.white,
+                backgroundColor: colors.primaryLight,
+                border: `${colors.secondaryDark} solid .2rem`
+            },
+            icon: null,
+            position: "top-center",
+        });
+    };
 
     return {
         talkTime: totalSeconds(minutes, seconds),
         onClick,
         onSideActionClicked,
+        onSideActionLongPress,
     };
 };
 

@@ -10,6 +10,8 @@ declare global {
 
         insertBefore(talk: Talk, playerId: GameplayPlayer["id"]): Talk[];
 
+        insertAfter(talk: Talk, playerId: GameplayPlayer["id"]): Talk[];
+
         playerIsFirstToTalk(playerId: GameplayPlayer["id"]): boolean;
 
         playerAlreadyTalked(playerId: GameplayPlayer["id"]): boolean;
@@ -33,6 +35,11 @@ Array.prototype.insertBefore = function <T extends Talk>(this: T[], talk: T, pla
     const talkIndexToTalkBefore = this.findIndex(t => t.playerId === playerId);
     if (talkIndexToTalkBefore === -1) return this;
     return this.insert(talk, talkIndexToTalkBefore);
+};
+Array.prototype.insertAfter = function <T extends Talk>(this: T[], talk: T, playerId: GameplayPlayer["id"]) {
+    const talkIndexToTalkBefore = this.findIndex(t => t.playerId === playerId);
+    if (talkIndexToTalkBefore === -1) return this;
+    return this.insert(talk, talkIndexToTalkBefore + 1);
 };
 Array.prototype.playerIsFirstToTalk = function <T extends Talk>(this: T[], playerId: GameplayPlayer["id"]) {
     const firstTalk = this.peak();

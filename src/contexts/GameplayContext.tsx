@@ -4,7 +4,7 @@ import {CONFIG} from "../initial-configs";
 import {useStorageReducer} from "react-storage-hooks";
 import {initializeTalkQueueType} from "../types/TalkQueue";
 
-initializeTalkQueueType()
+initializeTalkQueueType();
 
 type SetPlayersGameplayAction = {
     type: "SET_PLAYERS",
@@ -27,9 +27,9 @@ type TalkQueueGameplayAction = {
 } | {
     type: "TALK_FINISHED",
 } | {
-    type: "TALK",
+    type: "TALK_BEFORE" | "TALK_AFTER",
     payload: {
-        before: GameplayPlayer["id"],
+        playerId: GameplayPlayer["id"],
         talk: Talk
     }
 }
@@ -103,10 +103,17 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
         };
     }
 
-    if (action.type === "TALK") {
+    if (action.type === "TALK_BEFORE") {
         return {
             ...state,
-            talkQueue: state.talkQueue.insertBefore(action.payload.talk, action.payload.before),
+            talkQueue: state.talkQueue.insertBefore(action.payload.talk, action.payload.playerId),
+        };
+    }
+
+    if (action.type === "TALK_AFTER") {
+        return {
+            ...state,
+            talkQueue: state.talkQueue.insertAfter(action.payload.talk, action.payload.playerId),
         };
     }
 
