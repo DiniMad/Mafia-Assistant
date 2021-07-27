@@ -16,7 +16,7 @@ const PlayerOptions = ({player, display, setDisplay}: Props) => {
     const closeModal = () => setDisplay(false);
     const toggleDisable = () => {
         dispatch({
-            type: "TOGGLE_ACTIVE",
+            type: "TOGGLE_PLAYER_ACTIVE",
             payload: player.id,
         });
         closeModal();

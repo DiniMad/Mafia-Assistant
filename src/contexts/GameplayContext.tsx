@@ -1,5 +1,5 @@
-import React, {createContext, Dispatch, FC, useReducer} from "react";
-import {Gameplay, GameplayPlayer} from "../types/Gameplay";
+import React, {createContext, Dispatch, FC} from "react";
+import {Gameplay, GameplayPlayer, Talk} from "../types/Gameplay";
 import {CONFIG} from "../initial-configs";
 import {useStorageReducer} from "react-storage-hooks";
 
@@ -14,15 +14,15 @@ type RevealRoleGameplayAction = {
     type: "REVEAL_ROLE",
     payload: GameplayPlayer["id"]
 }
-type ToggleActiveGameplayAction = {
-    type: "TOGGLE_ACTIVE",
+type TogglePlayerActiveGameplayAction = {
+    type: "TOGGLE_PLAYER_ACTIVE",
     payload: GameplayPlayer["id"]
 }
 type GameplayAction =
     SetPlayersGameplayAction |
     DisplayRolesGameplayAction |
     RevealRoleGameplayAction |
-    ToggleActiveGameplayAction;
+    TogglePlayerActiveGameplayAction ;
 const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "SET_PLAYERS") {
         return {
@@ -57,7 +57,7 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
         };
     }
 
-    if (action.type === "TOGGLE_ACTIVE") {
+    if (action.type === "TOGGLE_PLAYER_ACTIVE") {
         const players = state.players.map(player => {
             if (player.id === action.payload)
                 return {
@@ -84,7 +84,7 @@ export const GameplayProvider: FC = ({children}) => {
         displayRoles: false,
         config: CONFIG,
     };
-    const [state, dispatch] = useStorageReducer(localStorage, "GAMEPLAY",reducer, initialState);
+    const [state, dispatch] = useStorageReducer(localStorage, "GAMEPLAY", reducer, initialState);
 
     return (
         <GameplayContext.Provider value={[state, dispatch]}>
