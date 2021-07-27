@@ -1,4 +1,5 @@
 import {ExclusivePersistentProperties, PersistentPlayer, PersistentPlayerRole} from "./PersistentData";
+import {TalkQueue} from "./TalkQueue";
 
 export type GameplayPlayerRole = Omit<PersistentPlayerRole, keyof ExclusivePersistentProperties | "variety"> & {
     revealed: boolean,
@@ -7,8 +8,11 @@ export type GameplayPlayerRole = Omit<PersistentPlayerRole, keyof ExclusivePersi
 export type GameplayPlayer = Omit<PersistentPlayer, keyof ExclusivePersistentProperties> & {
     role: GameplayPlayerRole,
     active: boolean,
-    talked: boolean,
-    talking: boolean,
+}
+
+export type Talk = {
+    playerId: GameplayPlayer["id"],
+    type: "discus" | "challenge" | "defence",
 }
 
 export type Config = {
@@ -20,5 +24,6 @@ export type Config = {
 export type Gameplay = {
     players: GameplayPlayer[],
     displayRoles: boolean,
+    talkQueue: TalkQueue,
     config: Config,
 }
