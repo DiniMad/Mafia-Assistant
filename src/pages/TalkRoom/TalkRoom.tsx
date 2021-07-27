@@ -1,18 +1,54 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import styled from "styled-components";
-import {colors} from "../../utilities";
+import {colors, colorWithOpacity} from "../../utilities";
 import {GameplayContext} from "../../contexts/GameplayContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTheaterMasks, faHandPaper} from "@fortawesome/free-solid-svg-icons";
-import {colorWithOpacity} from "../../utilities";
 import PageLayout from "../../components/PageLayout";
 import Player from "./Player";
+import {GameplayPlayer, Talk} from "../../types/Gameplay";
+import NotificationModal from "../../types/NotificationModal";
+import {TalkQueue} from "../../types/TalkQueue";
 
+const initializeTalkQueue = (players: GameplayPlayer[], talkStarterPlayerIndex: number) => {
+    const talks: Talk[] = [];
+    const activePlayers = players.filter(player => player.active);
+    const playersCount = activePlayers.length;
+
+    for (let i = talkStarterPlayerIndex; i < talkStarterPlayerIndex + playersCount; i++) {
+        const player = activePlayers[i % playersCount];
+        talks.push({
+            playerId: player.id,
+            type: "discus",
+        });
+    }
+
+    return new TalkQueue(talks);
+};
 
 const TalkRoom = () => {
     const [{players, displayRoles}, dispatch] = useContext(GameplayContext);
+    const talkStarterPlayerIndex = useRef(Math.floor(Math.random() * players.length));
+    const [firstPlayerToTalk, setFirstPlayerToTalk] = useState<GameplayPlayer>();
+    const [displayNotificationModal, setDisplayNotificationModal] = useState(true);
+    const [talkQueue, setTalkQueue] = useState<TalkQueue>(new TalkQueue([]));
 
-    const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES"});
+    useEffect(() => {
+        const talkQueue = initializeTalkQueue(players, talkStarterPlayerIndex.current);
+        setTalkQueue(talkQueue);
+
+        const firstPlayerToTalk = players.find(p => p.active && p.id === talkQueue.peak()?.playerId);
+        setFirstPlayerToTalk(firstPlayerToTalk);
+    }, []);
+
+    const toggleDisplayRoles = () => dispatch({type: "TOGGLE_DISPLAY_ROLES",});
+    const modalStartClicked = () => {
+        dispatch({
+            type: "SET_TALK_QUEUE",
+            payload: talkQueue,
+        });
+        setDisplayNotificationModal(false);
+    };
 
     return (
         <PageLayout pageTitle={"گفتگو"}>
@@ -23,8 +59,10 @@ const TalkRoom = () => {
                             {players.map(player =>
                                 <Player key={player.id}
                                         player={player}
-                                        displayRole={displayRoles}
-                                        timeToTalk={player.talking ? "30" : undefined}/>)}
+                                        displayRole={displayRoles}/>)}
+                            <NotificationModal playerName={firstPlayerToTalk?.name}
+                                               display={displayNotificationModal}
+                                               start={modalStartClicked}/>
                         </Players>,
                     menuContent:
                         <>
