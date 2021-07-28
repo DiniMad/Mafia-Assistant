@@ -5,6 +5,7 @@ const routes = {
     revealRoles: "/reveal-roles",
     talkRoom: "/talk-room",
     voteRoom: "/vote-room",
+    nightSleep: "/night-sleep",
     modifyPlayers: "/modify-players",
     config: "/config",
 };

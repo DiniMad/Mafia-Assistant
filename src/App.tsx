@@ -10,6 +10,7 @@ import SelectRoles from "./pages/SelectRoles";
 import RevealRoles from "./pages/RevealRoles";
 import TalkRoom from "./pages/TalkRoom";
 import VoteRoom from "./pages/VoteRoom";
+import NightSleep from "./pages/NightSleep";
 import ModifyPlayers from "./pages/ModifyPlayers";
 import Config from "./pages/Config";
 import {vh, vw} from "./utilities";
@@ -27,6 +28,7 @@ const App = () => {
                         <Route exact path={routes.revealRoles}> <RevealRoles/> </Route>
                         <Route exact path={routes.talkRoom}> <TalkRoom/> </Route>
                         <Route exact path={routes.voteRoom}> <VoteRoom/> </Route>
+                        <Route exact path={routes.nightSleep}> <NightSleep/> </Route>
                         <Route exact path={routes.modifyPlayers}> <ModifyPlayers/> </Route>
                         <Route exact path={routes.config}> <Config/> </Route>
                     </Switch>
