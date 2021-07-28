@@ -13,6 +13,7 @@ import ModifyPlayers from "./pages/ModifyPlayers";
 import Config from "./pages/Config";
 import {vh, vw} from "./utilities";
 import {Toaster} from "react-hot-toast";
+import VoteRoom from "./pages/VoteRoom";
 
 const App = () => {
     return (
@@ -25,6 +26,7 @@ const App = () => {
                         <Route exact path={routes.selectRoles}> <SelectRoles/> </Route>
                         <Route exact path={routes.revealRoles}> <RevealRoles/> </Route>
                         <Route exact path={routes.talkRoom}> <TalkRoom/> </Route>
+                        <Route exact path={routes.voteRoom}> <VoteRoom/> </Route>
                         <Route exact path={routes.modifyPlayers}> <ModifyPlayers/> </Route>
                         <Route exact path={routes.config}> <Config/> </Route>
                     </Switch>
