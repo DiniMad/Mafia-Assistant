@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {colors} from "../../utilities";
 import {PersistentPlayerRole} from "../../types/PersistentData";
 import {PersistentRolesContext} from "../../contexts/PersistentRolesContext";
-import useInputNumber from "./hooks/useInputNumber";
+import useInputNumber from "../../hooks/useInputNumber";
 
 type Props = Omit<PersistentPlayerRole, "shortName">
 const Role = ({name, side, selected, variety,count}: Props) => {
