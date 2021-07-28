@@ -9,11 +9,11 @@ import SelectPlayers from "./pages/SelectPlayers";
 import SelectRoles from "./pages/SelectRoles";
 import RevealRoles from "./pages/RevealRoles";
 import TalkRoom from "./pages/TalkRoom";
+import VoteRoom from "./pages/VoteRoom";
 import ModifyPlayers from "./pages/ModifyPlayers";
 import Config from "./pages/Config";
 import {vh, vw} from "./utilities";
 import {Toaster} from "react-hot-toast";
-import VoteRoom from "./pages/VoteRoom";
 
 const App = () => {
     return (
