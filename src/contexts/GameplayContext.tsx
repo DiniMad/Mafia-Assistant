@@ -39,13 +39,18 @@ type ChallengesBeenUsedGameplayAction = {
     type: "CHALLENGE_BEEN_USED",
     payload: GameplayPlayer["id"]
 }
+type ConfigTimeGameplayAction = {
+    type: "SET_TALK_TIME" | "SET_CHALLENGE_TIME" | "SET_DEFENCE_TIME",
+    payload: number
+}
 type GameplayAction =
     SetPlayersGameplayAction |
     DisplayRolesGameplayAction |
     RevealRoleGameplayAction |
     TogglePlayerActiveGameplayAction |
     TalkQueueGameplayAction |
-    ChallengesBeenUsedGameplayAction;
+    ChallengesBeenUsedGameplayAction|
+    ConfigTimeGameplayAction;
 const reducer = (state: Gameplay, action: GameplayAction) => {
     if (action.type === "SET_PLAYERS") {
         return {
@@ -139,6 +144,36 @@ const reducer = (state: Gameplay, action: GameplayAction) => {
                 action.payload,
             ],
         };
+    }
+    
+    if(action.type==="SET_TALK_TIME"){
+        return {
+            ...state,
+            config:{
+                ...state.config,
+                talkTime:action.payload
+            }
+        }
+    }
+    
+    if(action.type==="SET_CHALLENGE_TIME"){
+        return {
+            ...state,
+            config:{
+                ...state.config,
+                challengeTime:action.payload
+            }
+        }
+    }
+    
+    if(action.type==="SET_DEFENCE_TIME"){
+        return {
+            ...state,
+            config:{
+                ...state.config,
+                defenseTime:action.payload
+            }
+        }
     }
 
     return state;

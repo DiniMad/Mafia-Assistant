@@ -12,7 +12,7 @@ const StartPage = () => {
             <StartGameButton background={colors.primary} to={routes.modifyPlayers}>
                 {"ویرایش بازیکنان"}
             </StartGameButton>
-            <StartGameButton background={colors.primary} to={"#"}>
+            <StartGameButton background={colors.primary} to={routes.config}>
                 {"تنظیمات بازی"}
             </StartGameButton>
         </StartPageComponent>
