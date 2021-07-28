@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.js": "/Mafia-Assistant/static/js/main.18beb563.chunk.js",
-    "main.js.map": "/Mafia-Assistant/static/js/main.18beb563.chunk.js.map",
+    "main.js": "/Mafia-Assistant/static/js/main.d31fa3e6.chunk.js",
+    "main.js.map": "/Mafia-Assistant/static/js/main.d31fa3e6.chunk.js.map",
     "runtime-main.js": "/Mafia-Assistant/static/js/runtime-main.c5484ebc.js",
     "runtime-main.js.map": "/Mafia-Assistant/static/js/runtime-main.c5484ebc.js.map",
-    "static/js/2.2921bd60.chunk.js": "/Mafia-Assistant/static/js/2.2921bd60.chunk.js",
-    "static/js/2.2921bd60.chunk.js.map": "/Mafia-Assistant/static/js/2.2921bd60.chunk.js.map",
+    "static/js/2.ee29eff3.chunk.js": "/Mafia-Assistant/static/js/2.ee29eff3.chunk.js",
+    "static/js/2.ee29eff3.chunk.js.map": "/Mafia-Assistant/static/js/2.ee29eff3.chunk.js.map",
     "static/js/3.55c25b70.chunk.js": "/Mafia-Assistant/static/js/3.55c25b70.chunk.js",
     "static/js/3.55c25b70.chunk.js.map": "/Mafia-Assistant/static/js/3.55c25b70.chunk.js.map",
     "index.html": "/Mafia-Assistant/index.html",
     "service-worker.js": "/Mafia-Assistant/service-worker.js",
     "service-worker.js.map": "/Mafia-Assistant/service-worker.js.map",
-    "static/js/2.2921bd60.chunk.js.LICENSE.txt": "/Mafia-Assistant/static/js/2.2921bd60.chunk.js.LICENSE.txt",
+    "static/js/2.ee29eff3.chunk.js.LICENSE.txt": "/Mafia-Assistant/static/js/2.ee29eff3.chunk.js.LICENSE.txt",
     "static/media/Background.a9312c86.png": "/Mafia-Assistant/static/media/Background.a9312c86.png"
   },
   "entrypoints": [
     "static/js/runtime-main.c5484ebc.js",
-    "static/js/2.2921bd60.chunk.js",
-    "static/js/main.18beb563.chunk.js"
+    "static/js/2.ee29eff3.chunk.js",
+    "static/js/main.d31fa3e6.chunk.js"
   ]
 }
