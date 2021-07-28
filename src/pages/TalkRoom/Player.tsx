@@ -48,10 +48,6 @@ const PlayerComponent = styled.div`
   background-color: ${colors.primary};
   transition: background-color .5s;
 
-  &.long-press {
-    background-color: ${colorWithOpacity(colors.primaryDark, .8)};
-  }
-
   &.de-active, &.talked {
     background-color: ${colorWithOpacity(colors.primary, .6)};
 
