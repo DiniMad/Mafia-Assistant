@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/Mafia-Assistant/static/js/main.d31fa3e6.chunk.js",
-    "main.js.map": "/Mafia-Assistant/static/js/main.d31fa3e6.chunk.js.map",
+    "main.js": "/Mafia-Assistant/static/js/main.d4a0d9f1.chunk.js",
+    "main.js.map": "/Mafia-Assistant/static/js/main.d4a0d9f1.chunk.js.map",
     "runtime-main.js": "/Mafia-Assistant/static/js/runtime-main.c5484ebc.js",
     "runtime-main.js.map": "/Mafia-Assistant/static/js/runtime-main.c5484ebc.js.map",
     "static/js/2.ee29eff3.chunk.js": "/Mafia-Assistant/static/js/2.ee29eff3.chunk.js",
@@ -17,6 +17,6 @@
   "entrypoints": [
     "static/js/runtime-main.c5484ebc.js",
     "static/js/2.ee29eff3.chunk.js",
-    "static/js/main.d31fa3e6.chunk.js"
+    "static/js/main.d4a0d9f1.chunk.js"
   ]
 }
