@@ -4,14 +4,17 @@ import GodfatherImage from "@images/Godfather.png";
 import tw from "twin.macro";
 import {Link} from "react-router-dom";
 import appRoutes from "@/utilites/appRoutes";
+import {useTranslation} from "react-i18next";
 
 const Home = () => {
+    const {t} = useTranslation();
+    
     return (
         <Wrapper>
             <GodfatherLink to={appRoutes.godfather}>
                 <GodfatherImg/>
                 <GodfatherImgOverlay>
-                    <p>Godfather</p>
+                    <p>{t("godfather")}</p>
                 </GodfatherImgOverlay>
             </GodfatherLink>
         </Wrapper>
