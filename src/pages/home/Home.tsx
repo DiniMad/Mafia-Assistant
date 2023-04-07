@@ -3,11 +3,12 @@ import styled from "styled-components";
 import GodfatherImage from "@images/Godfather.png";
 import tw from "twin.macro";
 import {Link} from "react-router-dom";
+import appRoutes from "@/utilites/appRoutes";
 
 const Home = () => {
     return (
         <Wrapper>
-            <GodfatherLink to="">
+            <GodfatherLink to={appRoutes.godfather}>
                 <GodfatherImg/>
                 <GodfatherImgOverlay>
                     <p>Godfather</p>
