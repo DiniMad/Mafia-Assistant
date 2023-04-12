@@ -11,7 +11,7 @@ const Home = () => {
     
     return (
         <Wrapper>
-            <GodfatherLink to={appRoutes.godfather}>
+            <GodfatherLink to={appRoutes.godfather.index}>
                 <GodfatherImg/>
                 <GodfatherImgOverlay>
                     <p>{t("godfather")}</p>

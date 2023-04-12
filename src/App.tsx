@@ -4,15 +4,19 @@ import styled from "styled-components";
 import {Route, Routes} from "react-router-dom";
 import appRoutes from "@/utilites/appRoutes";
 import Home from "@/pages/home";
-import Godfather from "@/pages/Godfather";
+import Godfather from "@/pages/godfather";
+import {useAppDispatch} from "@/store/hooks";
+import {initializePlayersFromStorage} from "@/store/players";
 
 function App() {
+    const dispatch = useAppDispatch();
+    dispatch(initializePlayersFromStorage());
 
     return (
         <AppComponent>
             <Routes>
                 <Route path={appRoutes.home} element={<Home/>}/>
-                <Route path={appRoutes.godfather} element={<Godfather/>}/>
+                <Route path={appRoutes.godfather["*"]} element={<Godfather/>}/>
             </Routes>
         </AppComponent>
     );

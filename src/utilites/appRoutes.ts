@@ -1,4 +1,6 @@
 ﻿export default {
     home: "/",
-    godfather: "/godfather",
+    godfather: {
+        index: "/godfather",
+    },
 };
