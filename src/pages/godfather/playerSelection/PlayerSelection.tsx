@@ -27,7 +27,7 @@ const BottomMenu = () =>
             <FontAwesomeIcon icon={faUserEdit} tw="text-white text-2xl"/>
         </Link>
         <Link tw="flex justify-center items-center h-10 w-10"
-              to={appRoutes.godfather.roleSelection}>
+              to={appRoutes.godfather.pathTo("roleSelection")}>
             <FontAwesomeIcon icon={faArrowRight} tw="text-white text-2xl"/>
         </Link>
     </div>;
