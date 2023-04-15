@@ -20,11 +20,11 @@ const RoleSelection = () => {
 const BottomMenu = () =>
     <div tw="flex justify-between items-center h-full w-full">
         <Link tw="flex justify-center items-center h-10 w-10"
-              to={appRoutes.godfather.pathTo("index")}>
+              to={appRoutes.godfather.pathTo("")}>
             <FontAwesomeIcon icon={faArrowLeft} tw="text-white text-2xl"/>
         </Link>
         <Link tw="flex justify-center items-center h-10 w-10"
-              to={appRoutes.godfather.pathTo("revealRoles")}>
+              to={appRoutes.godfather.pathTo(appRoutes.godfather.revealRoles)}>
             <FontAwesomeIcon icon={faArrowRight} tw="text-white text-2xl"/>
         </Link>
     </div>;
