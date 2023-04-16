@@ -6,13 +6,16 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import Layout from "@/pages/godfather/Layout";
 import {useTranslation} from "react-i18next";
+import {useGodfatherRoles} from "@/store/godfather";
+import Role from "@/pages/godfather/roleSelection/Role";
 
 const RoleSelection = () => {
     const {t} = useTranslation();
-   
+    const roles = useGodfatherRoles();
+
     return (
         <Layout pageTitle={t("roleSelection")} bottomMenu={<BottomMenu/>}>
-            
+            {roles.map(r => <Role key={r.key} role={r}/>)}
         </Layout>
     );
 };
