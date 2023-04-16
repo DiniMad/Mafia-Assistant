@@ -10,7 +10,7 @@ type ReorderPlayerAction = PayloadAction<{
     sourceIndex: number,
     destinationIndex: number
 }>;
-type TogglePlayerSelect = PayloadAction<{
+type TogglePlayerSelectAction = PayloadAction<{
     playerId: PlayerType["id"],
 }>;
 
@@ -29,7 +29,7 @@ const reorderPlayer = (state: PlayersState, action: ReorderPlayerAction) => {
     state.entities.splice(action.payload.sourceIndex, 1);
     state.entities.splice(action.payload.destinationIndex, 0, player);
 };
-const togglePlayerSelect = (state: PlayersState, action: TogglePlayerSelect) => {
+const togglePlayerSelect = (state: PlayersState, action: TogglePlayerSelectAction) => {
     const player = state.entities.find(p => p.id === action.payload.playerId);
     if (!player) return;
 
