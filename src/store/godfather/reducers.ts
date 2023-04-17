@@ -21,7 +21,7 @@ const decrementRoleQuantity = (state: GodfatherState, action: DecrementRoleQuant
     const role = state.roles.find(r => r.key === action.payload.roleKey);
     if (role === undefined || role.variety === "One") return;
 
-    role.count = role.count - 1;
+    role.count = Math.max(role.count - 1, 1);
 };
 const incrementRoleQuantity = (state: GodfatherState, action: IncrementRoleQuantity) => {
     const role = state.roles.find(r => r.key === action.payload.roleKey);
