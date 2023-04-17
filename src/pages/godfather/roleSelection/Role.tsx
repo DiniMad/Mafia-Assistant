@@ -71,7 +71,7 @@ const SelectButton = tw.button`col-[1/3] row-[1/1] h-full`;
 const RoleSide = styled.p`
   ${tw`col-[1/1] row-[1/1] text-center text-sm font-medium overflow-hidden`}
   ${({side}: Pick<GodfatherRoleType, "side">) =>
-          side === "Citizen" ? tw`text-indigo-600` : side === "Mafia" ? tw`text-rose-500` : tw`text-amber-500`}
+          side === "Citizen" ? tw`text-indigo-600` : side === "Mafia" ? tw`text-pink-600` : tw`text-amber-500`}
 `;
 
 const RoleName = tw.p`col-[2/2] row-[1/1] text-center text-white font-bold overflow-hidden`;
