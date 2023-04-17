@@ -13,6 +13,17 @@
                     400: "#000000",
                 }
             },
+            animation: {
+                "ping-small": "1.5s cubic-bezier(0, 0, 0.2, 1) 0s infinite normal none running ping-small",
+            },
+            keyframes: {
+                "ping-small": {
+                    "75%, 100%": {
+                        transform: "scale(1.2)",
+                        opacity: "0",
+                    },
+                }
+            }
         },
     },
     plugins: [],

@@ -1,6 +1,6 @@
 ﻿import React from "react";
 import styled from "styled-components";
-import GodfatherImage from "@images/Godfather.png";
+import GodfatherImage from "@images/Godfather.jpg";
 import tw from "twin.macro";
 import {Link} from "react-router-dom";
 import appRoutes from "@/utilites/appRoutes";
@@ -8,14 +8,12 @@ import {useTranslation} from "react-i18next";
 
 const Home = () => {
     const {t} = useTranslation();
-    
+
     return (
         <Wrapper>
             <GodfatherLink to={appRoutes.godfather.pathTo("")}>
                 <GodfatherImg/>
-                <GodfatherImgOverlay>
-                    <p>{t("godfather")}</p>
-                </GodfatherImgOverlay>
+                <GodfatherLinkPingEffect/>
             </GodfatherLink>
         </Wrapper>
     );
@@ -23,14 +21,14 @@ const Home = () => {
 
 const Wrapper = tw.div`flex justify-center items-center h-full`;
 
-const GodfatherLink = tw(Link)`relative flex justify-center items-center overflow-hidden w-44 h-44 p-5 rounded-3xl bg-neutral-500 drop-shadow-xl`;
+const GodfatherLink = tw(Link)`grid w-44 h-44 rounded-xl border-2 border-white`;
 
 const GodfatherImg = styled.div`
-  background: url(${GodfatherImage});
-  ${tw`w-full h-full bg-cover`}
+  background: red url(${GodfatherImage});
+  ${tw`row-[1/1] col-[1/1] w-full h-full bg-cover rounded-xl z-10`}
 `;
 
-const GodfatherImgOverlay = tw.div`absolute flex justify-center items-center w-full h-full bg-neutral-900 bg-opacity-60 text-[#ef6c00] font-bold text-3xl`;
+const GodfatherLinkPingEffect = tw.div`row-[1/1] col-[1/1] bg-accent-300 rounded-xl animate-ping-small`;
 
 
 export default Home;
