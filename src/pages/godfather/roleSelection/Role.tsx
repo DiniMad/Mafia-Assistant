@@ -6,7 +6,7 @@ import {
     decrementRoleQuantity,
     incrementRoleQuantity,
     toggleSelectRole,
-} from "@/store/godfather";
+} from "@/store/roles";
 import {useTranslation} from "react-i18next";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCircleInfo, faMinus, faPlus} from "@fortawesome/free-solid-svg-icons";
@@ -35,8 +35,8 @@ const Role = ({role: {key, side, selected, variety, count}}: RoleProps) => {
         <RoleComponent>
             <RoleSelection selected={selected!!} onClick={toggleSelect}>
                 <SelectButton/>
-                <RoleSide side={side}>{t(`godfather-side-${side}`)}</RoleSide>
-                <RoleName>{t(`godfather-role-${key}`)}</RoleName>
+                <RoleSide side={side}>{t(`godfather:side-${side}`)}</RoleSide>
+                <RoleName>{t(`godfather:role-${key}`)}</RoleName>
                 <InfoButton onClick={toggleShowModal}>
                     <FontAwesomeIcon tw="text-white text-lg" icon={faCircleInfo}/>
                 </InfoButton>

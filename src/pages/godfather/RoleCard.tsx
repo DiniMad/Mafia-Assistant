@@ -1,6 +1,6 @@
 ﻿import React, {MouseEventHandler} from "react";
 import tw, {styled} from "twin.macro";
-import {GodfatherRoleType} from "@/store/godfather";
+import {GodfatherRoleType} from "@/store/roles";
 import {useTranslation} from "react-i18next";
 
 type RoleCardProps = {
@@ -16,9 +16,9 @@ const RoleCard = ({roleKey, side, onDoneButtonClicked}: RoleCardProps) => {
             <RoleImage src={`/src/assets/images/roles/${roleKey}.jpg`} alt="role"/>
             <CardOverlay/>
             <Info>
-                <InfoTitle>{t(`godfather-role-${roleKey}`)}</InfoTitle>
-                <InfoSide side={side}>{t(`godfather-side-${side}`)}</InfoSide>
-                <InfoDescription>{t(`godfather-role-description-${roleKey}`)}
+                <InfoTitle>{t(`godfather:role-${roleKey}`)}</InfoTitle>
+                <InfoSide side={side}>{t(`godfather:side-${side}`)}</InfoSide>
+                <InfoDescription>{t(`godfather:role-description-${roleKey}`)}
                 </InfoDescription>
             </Info>
             <DoneButton onClick={onDoneButtonClicked}>{t("ok")}</DoneButton>

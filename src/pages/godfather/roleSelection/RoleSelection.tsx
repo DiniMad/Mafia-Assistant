@@ -11,7 +11,7 @@ import Role from "@/pages/godfather/roleSelection/Role";
 
 const RoleSelection = () => {
     const {t} = useTranslation();
-    const roles = useGodfatherRoles();
+    const roles = useRoles();
 
     return (
         <Layout pageTitle={t("roleSelection")} bottomMenu={<BottomMenu/>}>

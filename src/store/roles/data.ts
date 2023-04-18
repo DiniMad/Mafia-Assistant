@@ -1,7 +1,11 @@
 ﻿import {RoleType} from "@/types/roleType";
-import {RoleKey, RoleSide} from "@/store/godfather/godfatherSlice";
 
-export const roles: RoleType<RoleKey, RoleSide>[] = [
+type RoleKey =
+    "godfather" | "saul" | "matador" | "mafia" | "nostradamus" |
+    "watson" | "leon" | "kane" | "constantine" | "citizen";
+type RoleSide = "Citizen" | "Mafia" | "Independent";
+export type GodfatherRoleType = RoleType<RoleKey, RoleSide>;
+const godfather: GodfatherRoleType[] = [
     {
         "key": "godfather",
         "side": "Mafia",
@@ -63,3 +67,5 @@ export const roles: RoleType<RoleKey, RoleSide>[] = [
         "count": 1,
     },
 ];
+
+export default {godfather};
