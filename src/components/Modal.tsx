@@ -17,6 +17,6 @@ const Modal = ({show, modalStyles, children, onWrapperClicked}: ModalProps) => {
     ), document.body);
 };
 
-const ModalComponent = tw.div`bg-background-400 fixed inset-0 flex justify-center items-center bg-opacity-70`;
+const ModalComponent = tw.div`bg-background-400 fixed inset-0 flex justify-center items-center bg-opacity-70 z-50`;
 
 export default Modal;

@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import Layout from "@/pages/godfather/Layout";
 import {useTranslation} from "react-i18next";
-import {useGodfatherRoles} from "@/store/godfather";
+import {useRoles} from "@/store/roles";
 import Role from "@/pages/godfather/roleSelection/Role";
 
 const RoleSelection = () => {
