@@ -1,5 +1,6 @@
 ﻿export default {
     home: "/",
+    players: "/players",
     godfather: {
         "*": "godfather/*",
         index: "godfather",
@@ -13,6 +14,6 @@
     },
 } as const;
 
-type ValueOf<T> = T    [keyof T];
+type ValueOf<T> = T[keyof T];
 
 

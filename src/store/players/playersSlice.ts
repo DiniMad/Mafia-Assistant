@@ -24,6 +24,7 @@ export const playersSlice = createSlice({
 
 export const {
     addPlayer,
+    removePlayer,
     reorderPlayer,
     togglePlayerSelect,
 } = playersSlice.actions;

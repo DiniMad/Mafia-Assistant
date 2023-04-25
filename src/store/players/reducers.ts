@@ -1,9 +1,12 @@
-﻿import {PlayerType} from "@/types/playerType";
-import {nanoid, PayloadAction} from "@reduxjs/toolkit";
-import {PlayersState} from "@/store/players/index";
+﻿import { PlayerType } from "@/types/playerType";
+import { nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { PlayersState } from "@/store/players/index";
 
 type AddPlayerAction = PayloadAction<{
     playerName: PlayerType["name"]
+}>;
+type RemovePlayerAction = PayloadAction<{
+    playerId: PlayerType["id"]
 }>;
 type ReorderPlayerAction = PayloadAction<{
     playerId: PlayerType["id"],
@@ -22,6 +25,9 @@ const addPlayer = (state: PlayersState, action: AddPlayerAction) => {
     };
     state.entities.unshift(player);
 };
+const removePlayer = (state: PlayersState, action: RemovePlayerAction) => {
+    state.entities = state.entities.filter(p => p.id !== action.payload.playerId);
+};
 const reorderPlayer = (state: PlayersState, action: ReorderPlayerAction) => {
     const player = state.entities.find(p => p.id === action.payload.playerId);
     if (!player) return;
@@ -36,4 +42,4 @@ const togglePlayerSelect = (state: PlayersState, action: TogglePlayerSelectActio
     player.selected = !player.selected;
 };
 
-export default {addPlayer, reorderPlayer, togglePlayerSelect};
+export default { addPlayer, removePlayer, reorderPlayer, togglePlayerSelect };

@@ -7,6 +7,7 @@ import Home from "@/pages/home";
 import Godfather from "@/pages/godfather";
 import {useAppDispatch} from "@/store/hooks";
 import {initializePlayersFromStorage} from "@/store/players";
+import Players from "./pages/players";
 
 function App() {
     const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ function App() {
             <Routes>
                 <Route path={appRoutes.home} element={<Home/>}/>
                 <Route path={appRoutes.godfather["*"]} element={<Godfather/>}/>
+                <Route path={appRoutes.players} element={<Players/>}/>
             </Routes>
         </AppComponent>
     );
