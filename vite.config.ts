@@ -4,6 +4,7 @@ import * as path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    base: "/Mafia-Assistant/",
     optimizeDeps: {
         esbuildOptions: {
             target: "es2020",
@@ -22,9 +23,9 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'src'),
-            '@components': path.resolve(__dirname, 'src/components'),
-            '@images': path.resolve(__dirname, 'src/assets/images'),
-        }
+            "@": path.resolve(__dirname, "src"),
+            "@components": path.resolve(__dirname, "src/components"),
+            "@images": path.resolve(__dirname, "src/assets/images"),
+        },
     },
 });
