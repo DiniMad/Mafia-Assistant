@@ -1,11 +1,16 @@
 ﻿{
-    "app": {
-        "godfather": "پدر خوانده",
-        "playerSelection": "انتخاب بازیکن",
-        "roleSelection": "انتخاب نقش",
-        "assignRole": "تعیین نقش",
-        "players": "بازیکنان",
-        "playerName": "نام بازیکن",
-        "ok": "باشه"
-    }
+  "app": {
+    "godfather": "پدر خوانده",
+    "playerSelection": "انتخاب بازیکن",
+    "roleSelection": "انتخاب نقش",
+    "assignRole": "تعیین نقش",
+    "players": "بازیکنان",
+    "playerName": "نام بازیکن",
+    "talking": "گفتگو",
+    "ok": "باشه",
+    "next": "بعدی",
+    "playerToTalk": "بازیکن شروع کننده",
+    "challengeBefore": "چالش قبل",
+    "challengeNext": "چالش بعد"
+  }
 }
