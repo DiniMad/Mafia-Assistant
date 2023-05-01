@@ -57,7 +57,7 @@ const StartPopup = ({title, playerName, start}: StartPopupArgs) =>
         <h2 tw="text-white text-3xl font-bold">{title}</h2>
         <hr tw="w-full my-5 border-background-200 border-t-4"/>
         <div tw="flex flex-col justify-between h-full">
-            <p tw="text-white text-2xl">{playerName}</p>
+            <p tw="text-white text-center text-2xl">{playerName}</p>
             <button tw="bg-accent-300 text-white py-2 px-5 rounded" onClick={start}>Start</button>
         </div>
     </div>;
