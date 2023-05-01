@@ -10,6 +10,6 @@ import {store} from "@/store";
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Provider store={store}>
         <GlobalStyles/>
-        <BrowserRouter> <App/> </BrowserRouter>
+        <BrowserRouter basename="/Mafia-Assistant"> <App/> </BrowserRouter>
     </Provider>,
 );
