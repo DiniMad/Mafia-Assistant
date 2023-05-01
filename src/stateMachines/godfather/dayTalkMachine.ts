@@ -192,7 +192,10 @@ export const dayTalkMachine = createMachine<Context, Event>(
                 ...tickStateDefinition,
             },
             finish: {
-                entry: "setTalkingPlayerToUndefined",
+                entry: [
+                    "setTalkingPlayerToUndefined",
+                    "setChallengeAvailableToFalse",
+                ],
                 type: "final",
             },
         },
