@@ -1,0 +1,40 @@
+{
+    "short_name": "Mafia Assistant",
+    "name": "Mafia Assistant",
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "orientation": "portrait",
+    "icons": [{
+            "src": "Icon-512x512.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "Icon-384x384.png",
+            "type": "image/png",
+            "sizes": "384x384",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "Icon-192x192.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "Icon-144x144.png",
+            "type": "image/png",
+            "sizes": "144x144",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "Icon-96x96.png",
+            "type": "image/png",
+            "sizes": "96x96",
+            "purpose": "any maskable"
+        }
+    ]
+}
