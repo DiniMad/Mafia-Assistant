@@ -16,7 +16,7 @@ const Godfather = () => {
             <Route index element={<PlayerSelection/>}/>
             <Route path={appRoutes.godfather.roleSelection} element={<RoleSelection/>}/>
             <Route path={appRoutes.godfather.revealRoles} element={<RevealRole/>}/>
-            <Route path={appRoutes.godfather.gameFlow} element={<GameFlow/>}/>
+            <Route path={appRoutes.godfather.gameFlow["*"]} element={<GameFlow/>}/>
         </Routes>
     );
 };

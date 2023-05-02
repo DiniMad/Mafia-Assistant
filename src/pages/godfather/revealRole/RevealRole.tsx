@@ -62,12 +62,12 @@ const BottomMenu = ({shuffleRoles, onShuffleAnimationEnded, reshuffleAnimation}:
                            onAnimationEnd={onShuffleAnimationEnded}/>
         </button>
         <Link tw="flex justify-center items-center h-10 w-10"
-              to={appRoutes.godfather.pathTo(appRoutes.godfather.gameFlow)}>
+              to={appRoutes.godfather.gameFlow.pathTo("")}>
             <FontAwesomeIcon icon={faArrowRight} tw="text-white text-2xl"/>
         </Link>
     </div>;
 
-const ReshuffleIcon = styled(FontAwesomeIcon)`
+    const ReshuffleIcon = styled(FontAwesomeIcon)`
   ${tw`text-white text-2xl`}
   ${({animation}: { animation: boolean }) => animation && tw`animate-rotate`}
 `;
