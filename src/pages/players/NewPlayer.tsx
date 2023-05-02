@@ -32,7 +32,7 @@ function NewPlayer({ addNewPlayer }: NewPlayerProps) {
 
 const NewPlayerComponent = tw.div`grid grid-cols-[5fr_1fr] justify-center items-center mx-1 m-1`
 
-const NewPlayerInput = tw.input`col-[1/3] row-[1/1] text-center text-lg h-10 focus-visible:outline-none`
+const NewPlayerInput = tw.input`bg-background-200 col-[1/3] row-[1/1] text-white text-center text-lg h-10 focus-visible:outline-none`
 
 const NewPlayerSaveButton = tw.button`col-[2/3] row-[1/1] justify-self-center bg-background-400 flex justify-center items-center h-8 w-8`;
 const NewPlayerSaveButtonIcon = tw(FontAwesomeIcon)`text-white text-2xl`
