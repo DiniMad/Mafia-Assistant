@@ -19,7 +19,7 @@ export default (actor: ActorRef<Event, State<Context, Event>>) => {
             ((challengeTime / 1000) - state.context.elapsedTime) :
             ((talkTime / 1000) - state.context.elapsedTime);
     const openStartPopup = state.matches("ready");
-    const isDone = state.done!!;
+    const isDone = state.matches("finish");
     const challengeAvailable = state.context.challengeAvailable;
 
     useEffect(() => {

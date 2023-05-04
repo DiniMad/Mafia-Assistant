@@ -12,7 +12,10 @@ type Context = {
     dayTalkMachine: ActorRef<DayTalkEvent, State<DayTalkContext, DayTalkEvent>>,
 }
 
-export const gameFlowMachine = createMachine<Context>({
+export type DayTalkEndEvent = { type: "DAY_TALK_END" };
+type Event = DayTalkEndEvent;
+
+export const gameFlowMachine = createMachine<Context, Event>({
     id: "gameFlow",
     initial: "dayTalk",
     states: {
@@ -21,8 +24,15 @@ export const gameFlowMachine = createMachine<Context>({
                 dayTalkMachine: (context) => spawn(dayTalkMachine.withConfig(context.dayTalkMachineOptions)),
                 appRoute: () => appRoutes.godfather.gameFlow.pathTo(appRoutes.godfather.gameFlow.dayTalk),
             }),
+            on: {
+                DAY_TALK_END: "voting",
+            },
         },
-        voting: {},
+        voting: {
+            entry: assign({
+                appRoute: () => appRoutes.godfather.gameFlow.pathTo(appRoutes.godfather.gameFlow.voting),
+            }),
+        },
         elimination: {},
         nightAction: {},
         nightAnnouncement: {},

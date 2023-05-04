@@ -75,13 +75,12 @@ const BottomMenu = ({nextTitle, isDone, next}: BottomMenuArgs) =>
               to="#">
             <FontAwesomeIcon icon={faArrowLeft} tw="text-white text-2xl"/>
         </Link>
-        {isDone ?
-            <Link tw="flex justify-center items-center h-10 w-10"
-                  to="#">
-                <FontAwesomeIcon icon={faArrowRight} tw="text-white text-2xl"/>
-            </Link> :
-            <button tw="flex justify-center items-center text-white h-10 w-10" onClick={next}>{nextTitle}</button>
-        }
+        <button tw="flex justify-center items-center text-white h-10 w-10" onClick={next}>
+            {isDone ?
+                <FontAwesomeIcon icon={faArrowRight} tw="text-white text-2xl"/> :
+                nextTitle
+            }
+        </button>
     </div>;
 
 export default DayTalk;

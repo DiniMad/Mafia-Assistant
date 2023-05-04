@@ -1,4 +1,4 @@
-﻿import {createMachine, assign, send, actions} from "xstate";
+﻿import {createMachine, assign, send, actions, sendParent} from "xstate";
 import {tickStateDefinition, resetTick, TickEvents, TickContext} from "@/stateMachines/common/tickStateDefinition";
 import {GodfatherPlayer} from "@/types/godfatherGame";
 
@@ -196,7 +196,11 @@ export const dayTalkMachine = createMachine<Context, Event>(
                     "setTalkingPlayerToUndefined",
                     "setChallengeAvailableToFalse",
                 ],
-                type: "final",
+                on: {
+                    NEXT: {
+                        actions: "sendEndEventToParent",
+                    },
+                },
             },
         },
     },
@@ -315,6 +319,7 @@ export const dayTalkMachine = createMachine<Context, Event>(
             setTalkingPlayerToUndefined: assign({
                 talkingPlayer: () => undefined!,
             }),
+            sendEndEventToParent: sendParent("DAY_TALK_END"),
         },
         delays: {
             challengeTimeWindow: 3000,
