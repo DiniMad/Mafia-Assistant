@@ -1,22 +1,16 @@
 ﻿import {useGodfatherGamePlayers} from "@/store/godfatherGame";
-import {useMachine} from "@xstate/react";
-import {dayTalkMachine} from "@/stateMachines/godfather/dayTalkMachine";
+import {useActor} from "@xstate/react";
+import {Context, Event} from "@/stateMachines/godfather/dayTalkMachine";
 import {useEffect} from "react";
 import {GodfatherPlayer} from "@/types/godfatherGame";
+import {ActorRef, State} from "xstate";
 
-export default () => {
+export default (actor: ActorRef<Event, State<Context, Event>>) => {
     const godfatherPlayers = useGodfatherGamePlayers();
-    // TODO: Game config hook
-    const challengeTimeWindow = 3000;
-    const talkTime = 5000;
-    const challengeTime = 3000;
-    const [state, send] = useMachine(dayTalkMachine, {
-        guards: {
-            goNextAutomatically: () => false,
-            expireChallengeAutomatically: () => false,
-        },
-        delays: {challengeTimeWindow, talkTime, challengeTime},
-    });
+    const [state, send] = useActor(actor);
+
+    const challengeTime = state.machine?.options.delays!["challengeTime"] as number;
+    const talkTime = state.machine?.options.delays!["talkTime"] as number;
 
     const players = state.context.players;
     const talkingPlayer = players.find(p => p.id === state.context.talkingPlayer);
@@ -29,7 +23,7 @@ export default () => {
     const challengeAvailable = state.context.challengeAvailable;
 
     useEffect(() => {
-        if (godfatherPlayers.length > 0) 
+        if (godfatherPlayers.length > 0)
             send({type: "INITIALIZE", players: godfatherPlayers});
     }, [godfatherPlayers.length]);
 

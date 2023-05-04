@@ -8,8 +8,13 @@ import Layout from "@components/Layout";
 import Modal from "@components/Modal";
 import useDayTalk from "@/pages/godfather/gameFlow/dayTalk/useDayTalk";
 import Player from "@/pages/godfather/gameFlow/dayTalk/Player";
+import {ActorRef, State} from "xstate";
+import {Context, Event} from "@/stateMachines/godfather/dayTalkMachine";
 
-const DayTalk = () => {
+type DayTalkProps = {
+    actor: ActorRef<Event, State<Context, Event>>
+}
+const DayTalk = ({actor}: DayTalkProps) => {
     const {t} = useTranslation();
     const {
         players,
@@ -22,7 +27,7 @@ const DayTalk = () => {
         next,
         challengeNow,
         challengeNext,
-    } = useDayTalk();
+    } = useDayTalk(actor);
 
     return (
         <>

@@ -10,7 +10,7 @@ export type DayTalkPlayer = {
     challengeQuantity: number
 }
 
-type Context = TickContext & {
+export type Context = TickContext & {
     talkingPlayer: GodfatherPlayer["id"],
     nextPlayerToTalk?: GodfatherPlayer["id"],
     challengerPlayer?: GodfatherPlayer["id"],
@@ -25,7 +25,7 @@ type ChallengeEvent = {
     type: "CHALLENGE_NOW" | "CHALLENGE_NEXT",
     playerId: DayTalkPlayer["id"]
 }
-type Event = InitializeEvent | StartEvent | NextEvent | ChallengeEvent | TickEvents
+export type Event = InitializeEvent | StartEvent | NextEvent | ChallengeEvent | TickEvents
 
 export const dayTalkMachine = createMachine<Context, Event>(
     {
