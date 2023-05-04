@@ -52,8 +52,9 @@ const Player = ({
 const PlayerComponent = styled.div`
   ${tw`grid grid-cols-[1fr_4fr_1fr] justify-items-center items-center text-white h-10 m-1.5`}
   ${({spoken, talking}: { spoken: boolean, talking: boolean }) =>
-          spoken ? tw`bg-background-300 bg-opacity-50` :
-                  talking ? tw`bg-accent-300` : tw`bg-background-300`}
+          talking ? tw`bg-accent-300` :
+                  spoken ? tw`bg-background-300 bg-opacity-50` :
+                          tw`bg-background-300`}
 `;
 
 const PlayerName = tw.p`col-[1/4] row-[1/1] text-lg text-center`;
