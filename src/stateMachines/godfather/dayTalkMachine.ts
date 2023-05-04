@@ -29,6 +29,7 @@ export type Event = InitializeEvent | StartEvent | NextEvent | ChallengeEvent | 
 
 export const dayTalkMachine = createMachine<Context, Event>(
     {
+        predictableActionArguments: true,
         id: "dayTalk",
         initial: "uninitialized",
         context: {

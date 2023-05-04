@@ -16,6 +16,7 @@ export type DayTalkEndEvent = { type: "DAY_TALK_END" };
 type Event = DayTalkEndEvent;
 
 export const gameFlowMachine = createMachine<Context, Event>({
+    predictableActionArguments: true,
     id: "gameFlow",
     initial: "dayTalk",
     states: {
