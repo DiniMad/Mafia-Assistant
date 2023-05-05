@@ -2,6 +2,7 @@
 import tw, {styled} from "twin.macro";
 import {GodfatherRoleType} from "@/store/roles";
 import {useTranslation} from "react-i18next";
+import {getImage} from "@/utilites/godFatherImagesMap";
 
 type RoleCardProps = {
     roleKey: GodfatherRoleType["key"],
@@ -10,10 +11,11 @@ type RoleCardProps = {
 }
 const RoleCard = ({roleKey, side, onDoneButtonClicked}: RoleCardProps) => {
     const {t} = useTranslation();
+    const cardImage = getImage(roleKey);
 
     return (
         <RoleCardComponent onClick={e => e.stopPropagation()}>
-            <RoleImage src={`/src/assets/images/roles/${roleKey}.jpg`} alt="role"/>
+            <RoleImage src={cardImage} alt="role"/>
             <CardOverlay/>
             <Info>
                 <InfoTitle>{t(`godfather:role-${roleKey}`)}</InfoTitle>
