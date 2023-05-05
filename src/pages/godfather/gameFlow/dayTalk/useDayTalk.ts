@@ -1,12 +1,9 @@
-﻿import {useGodfatherGamePlayers} from "@/store/godfatherGame";
-import {useActor} from "@xstate/react";
+﻿import {useActor} from "@xstate/react";
 import {Context, Event} from "@/stateMachines/godfather/dayTalkMachine";
-import {useEffect} from "react";
 import {GodfatherPlayer} from "@/types/godfatherGame";
 import {ActorRef, State} from "xstate";
 
 export default (actor: ActorRef<Event, State<Context, Event>>) => {
-    const godfatherPlayers = useGodfatherGamePlayers();
     const [state, send] = useActor(actor);
 
     const challengeTime = state.machine?.options.delays!["challengeTime"] as number;
@@ -21,11 +18,6 @@ export default (actor: ActorRef<Event, State<Context, Event>>) => {
     const openStartPopup = state.matches("ready");
     const isDone = state.matches("finish");
     const challengeAvailable = state.context.challengeAvailable;
-
-    useEffect(() => {
-        if (godfatherPlayers.length > 0)
-            send({type: "INITIALIZE", players: godfatherPlayers});
-    }, [godfatherPlayers.length]);
 
     const start = () => send({type: "START"});
     const next = () => send({type: "NEXT"});
