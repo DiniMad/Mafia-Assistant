@@ -6,7 +6,7 @@ import {initializeRolesFromStorage} from "@/store/roles/thunk";
 
 
 export type RolesState<RoleKey extends string, RoleSide extends string> = {
-    dataKey?: keyof typeof data,
+    dataKey?: keyof typeof data | "pending",
     entities: RoleType<RoleKey, RoleSide>[]
 }
 const initialState: RolesState<string, string> = {
@@ -18,6 +18,10 @@ export const rolesSlice = createSlice({
     initialState,
     reducers: reducers,
     extraReducers: builder => {
+        builder.addCase(initializeRolesFromStorage.pending,
+            (state) => {
+                state.dataKey = "pending";
+            });
         builder.addCase(initializeRolesFromStorage.fulfilled,
             (state, action) => {
                 state.dataKey = action.payload.dataKey;

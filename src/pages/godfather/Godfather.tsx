@@ -10,7 +10,7 @@ import {initializeRolesFromData, useRoleDataKey} from "@/store/roles";
 const Godfather = () => {
     const dispatch = useAppDispatch();
     const roleDataKey = useRoleDataKey();
-    if (roleDataKey !== "godfather" && roleDataKey !== undefined)
+    if (roleDataKey !== "godfather" && roleDataKey !== "pending")
         dispatch(initializeRolesFromData({dataKey: "godfather"}));
 
     return (
