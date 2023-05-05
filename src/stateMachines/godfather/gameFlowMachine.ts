@@ -15,7 +15,7 @@ import {GodfatherPlayer} from "@/types/godfatherGame";
 export type Context = {
     appRoute: string,
     players: GodfatherPlayer[],
-    playersToDefence: GodfatherPlayer["id"][],
+    playersToTalk: GodfatherPlayer[],
     talkingMachine: ActorRef<TalkingEvent, State<TalkingContext, TalkingEvent>>,
     talkingMachineOptions: typeof talkingMachine.options,
     votingMachine: ActorRef<VotingEvent, State<VotingContext, VotingEvent>>,
@@ -34,7 +34,10 @@ export const gameFlowMachine = createMachine<Context, Event>({
             uninitialized: {
                 on: {
                     INITIALIZE: {
-                        actions: "assignPlayers",
+                        actions: [
+                            "assignPlayers",
+                            "assignPlayersToPlayersToTalk",
+                        ],
                         target: "dayTalk",
                     },
                 },
@@ -59,7 +62,7 @@ export const gameFlowMachine = createMachine<Context, Event>({
                     VOTING_END: [
                         {
                             cond: "playerToDefenceNotEmpty",
-                            actions: "assignPlayerToDefence",
+                            actions: "assignEventPlayersToDefenceToPlayersToTalk",
                             target: "defenceTalk",
                         },
                         {
@@ -68,7 +71,13 @@ export const gameFlowMachine = createMachine<Context, Event>({
                     ],
                 },
             },
-            defenceTalk: {},
+            defenceTalk: {
+                entry: [
+                    "spawnTalkingMachine",
+                    "assignAppRouteToTalkRoomPath",
+                    "sendInitializeEventToTalkingActor",
+                ],
+            },
             elimination: {},
             nightAction: {},
             nightAnnouncement: {},
@@ -87,6 +96,9 @@ export const gameFlowMachine = createMachine<Context, Event>({
             assignPlayers: assign({
                 players: (_, e: InitializeEvent) => e.players,
             }),
+            assignPlayersToPlayersToTalk: assign({
+                playersToTalk: (ctx) => ctx.players,
+            }),
             spawnTalkingMachine: assign({
                 talkingMachine: ctx => spawn(talkingMachine.withConfig(ctx.talkingMachineOptions)),
             }),
@@ -95,7 +107,7 @@ export const gameFlowMachine = createMachine<Context, Event>({
             }),
             sendInitializeEventToTalkingActor: sendTo(
                 ctx => ctx.talkingMachine,
-                ctx => ({type: "INITIALIZE", players: ctx.players})),
+                ctx => ({type: "INITIALIZE", players: ctx.playersToTalk})),
             spawnVotingMachine: assign({
                 votingMachine: () => spawn(votingMachine),
             }),
@@ -105,8 +117,8 @@ export const gameFlowMachine = createMachine<Context, Event>({
             sendInitializeEventToVotingActor: sendTo(
                 ctx => ctx.votingMachine,
                 ctx => ({type: "INITIALIZE", players: ctx.players})),
-            assignPlayerToDefence: assign({
-                playersToDefence: (_, e: VotingEndEvent) => e.playersToDefence,
+            assignEventPlayersToDefenceToPlayersToTalk: assign({
+                playersToTalk: (ctx, e: VotingEndEvent) => ctx.players.filter(p => e.playersToDefence.includes(p.id)),
             }),
         },
     });
