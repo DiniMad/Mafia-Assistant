@@ -1,5 +1,5 @@
 ﻿import React, {AnimationEventHandler, MouseEventHandler, useEffect, useState} from "react";
-import tw, {styled} from "twin.macro";
+import tw, {styled, TwStyle} from "twin.macro";
 import {Link} from "react-router-dom";
 import appRoutes from "@/utilites/appRoutes";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -23,7 +23,7 @@ const RoleSelection = () => {
 
     useEffect(() => {
         dispatch(assignRolesToPlayersRandomly({players, roles}));
-    }, []);
+    }, [players, roles]);
 
     const shuffleRoles = () => {
         dispatch(assignRolesToPlayersRandomly({players, roles}));
