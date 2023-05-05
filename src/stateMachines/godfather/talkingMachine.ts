@@ -1,8 +1,9 @@
 ﻿import {createMachine, assign, send, actions, sendParent} from "xstate";
 import {tickStateDefinition, resetTick, TickEvents, TickContext} from "@/stateMachines/common/tickStateDefinition";
+import {Context as GameFlowContext, Event as GameFlowEvent} from "@/stateMachines/godfather/gameFlowMachine";
 import {GodfatherPlayer} from "@/types/godfatherGame";
 
-export type DayTalkPlayer = {
+export type TalkingPlayer = {
     id: GodfatherPlayer["id"],
     name: string,
     hasSpoken: boolean,
@@ -14,23 +15,23 @@ export type Context = TickContext & {
     talkingPlayer: GodfatherPlayer["id"],
     nextPlayerToTalk?: GodfatherPlayer["id"],
     challengerPlayer?: GodfatherPlayer["id"],
-    players: DayTalkPlayer[],
+    players: TalkingPlayer[],
     challengeAvailable: boolean,
 }
 
-type InitializeEvent = { type: "INITIALIZE", players: Pick<DayTalkPlayer, "id" | "name">[] }
+type InitializeEvent = { type: "INITIALIZE", players: Pick<TalkingPlayer, "id" | "name">[] }
 type StartEvent = { type: "START" }
 type NextEvent = { type: "NEXT" }
 type ChallengeEvent = {
     type: "CHALLENGE_NOW" | "CHALLENGE_NEXT",
-    playerId: DayTalkPlayer["id"]
+    playerId: TalkingPlayer["id"]
 }
 export type Event = InitializeEvent | StartEvent | NextEvent | ChallengeEvent | TickEvents
 
-export const dayTalkMachine = createMachine<Context, Event>(
+export const talkingMachine = createMachine<Context, Event>(
     {
         predictableActionArguments: true,
-        id: "dayTalk",
+        id: "talking",
         initial: "uninitialized",
         context: {
             players: [],
@@ -320,7 +321,7 @@ export const dayTalkMachine = createMachine<Context, Event>(
             setTalkingPlayerToUndefined: assign({
                 talkingPlayer: () => undefined!,
             }),
-            sendEndEventToParent: sendParent("DAY_TALK_END"),
+            sendEndEventToParent: sendParent("TALKING_END"),
         },
         delays: {
             challengeTimeWindow: 3000,

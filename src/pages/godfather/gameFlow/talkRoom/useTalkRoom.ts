@@ -1,5 +1,5 @@
 ﻿import {useActor} from "@xstate/react";
-import {Context, Event} from "@/stateMachines/godfather/dayTalkMachine";
+import {Context, Event} from "@/stateMachines/godfather/talkingMachine";
 import {GodfatherPlayer} from "@/types/godfatherGame";
 import {ActorRef, State} from "xstate";
 

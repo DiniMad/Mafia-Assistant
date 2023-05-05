@@ -14,7 +14,7 @@ const appRoutes = {
             "*": "game/*",
             index: `game`,
             parent: "/godfather",
-            dayTalk: "dayTalk",
+            talkRoom: "talkRoom",
             voting: "voting",
             pathTo,
         },

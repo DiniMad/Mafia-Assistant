@@ -1,18 +1,9 @@
-﻿import {
-    ActorRef,
-    assign,
-    createMachine,
-    InternalMachineOptions,
-    sendTo,
-    spawn,
-    State,
-    StateMachine,
-} from "xstate";
+﻿import {ActorRef, assign, createMachine, sendTo, spawn, State} from "xstate";
 import {
-    dayTalkMachine,
-    Event as DayTalkEvent,
-    Context as DayTalkContext,
-} from "@/stateMachines/godfather/dayTalkMachine";
+    talkingMachine,
+    Event as TalkingEvent,
+    Context as TalkingContext,
+} from "@/stateMachines/godfather/talkingMachine";
 import {
     votingMachine,
     Event as VotingEvent,
@@ -21,19 +12,19 @@ import {
 import appRoutes from "@/utilites/appRoutes";
 import {GodfatherPlayer} from "@/types/godfatherGame";
 
-type Context = {
+export type Context = {
     appRoute: string,
     players: GodfatherPlayer[],
     playersToDefence: GodfatherPlayer["id"][],
-    dayTalkMachine: ActorRef<DayTalkEvent, State<DayTalkContext, DayTalkEvent>>,
-    dayTalkMachineOptions: typeof dayTalkMachine.options,
+    talkingMachine: ActorRef<TalkingEvent, State<TalkingContext, TalkingEvent>>,
+    talkingMachineOptions: typeof talkingMachine.options,
     votingMachine: ActorRef<VotingEvent, State<VotingContext, VotingEvent>>,
 }
 
 export type InitializeEvent = { type: "INITIALIZE", players: GodfatherPlayer[] };
-export type DayTalkEndEvent = { type: "DAY_TALK_END" };
+export type TalkingEndEvent = { type: "TALKING_END" };
 export type VotingEndEvent = { type: "VOTING_END", playersToDefence: GodfatherPlayer["id"][] };
-type Event = InitializeEvent | DayTalkEndEvent | VotingEndEvent;
+export type Event = InitializeEvent | TalkingEndEvent | VotingEndEvent;
 
 export const gameFlowMachine = createMachine<Context, Event>({
         predictableActionArguments: true,
@@ -50,12 +41,12 @@ export const gameFlowMachine = createMachine<Context, Event>({
             },
             dayTalk: {
                 entry: [
-                    "spawnDayTalkMachine",
-                    "assignAppRouteToDayTalkPath",
-                    "sendInitializeEventToDayTalkActor",
+                    "spawnTalkingMachine",
+                    "assignAppRouteToTalkRoomPath",
+                    "sendInitializeEventToTalkingActor",
                 ],
                 on: {
-                    DAY_TALK_END: "voting",
+                    TALKING_END: "voting",
                 },
             },
             voting: {
@@ -96,14 +87,14 @@ export const gameFlowMachine = createMachine<Context, Event>({
             assignPlayers: assign({
                 players: (_, e: InitializeEvent) => e.players,
             }),
-            spawnDayTalkMachine: assign({
-                dayTalkMachine: ctx => spawn(dayTalkMachine.withConfig(ctx.dayTalkMachineOptions)),
+            spawnTalkingMachine: assign({
+                talkingMachine: ctx => spawn(talkingMachine.withConfig(ctx.talkingMachineOptions)),
             }),
-            assignAppRouteToDayTalkPath: assign({
-                appRoute: () => appRoutes.godfather.gameFlow.pathTo(appRoutes.godfather.gameFlow.dayTalk),
+            assignAppRouteToTalkRoomPath: assign({
+                appRoute: () => appRoutes.godfather.gameFlow.pathTo(appRoutes.godfather.gameFlow.talkRoom),
             }),
-            sendInitializeEventToDayTalkActor: sendTo(
-                ctx => ctx.dayTalkMachine,
+            sendInitializeEventToTalkingActor: sendTo(
+                ctx => ctx.talkingMachine,
                 ctx => ({type: "INITIALIZE", players: ctx.players})),
             spawnVotingMachine: assign({
                 votingMachine: () => spawn(votingMachine),

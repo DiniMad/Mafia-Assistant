@@ -6,15 +6,15 @@ import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import {useTranslation} from "react-i18next";
 import Layout from "@components/Layout";
 import Modal from "@components/Modal";
-import useDayTalk from "@/pages/godfather/gameFlow/dayTalk/useDayTalk";
-import Player from "@/pages/godfather/gameFlow/dayTalk/Player";
+import useTalkRoom from "@/pages/godfather/gameFlow/talkRoom/useTalkRoom";
+import Player from "@/pages/godfather/gameFlow/talkRoom/Player";
 import {ActorRef, State} from "xstate";
-import {Context, Event} from "@/stateMachines/godfather/dayTalkMachine";
+import {Context, Event} from "@/stateMachines/godfather/talkingMachine";
 
-type DayTalkProps = {
+type TalkRoomProps = {
     actor: ActorRef<Event, State<Context, Event>>
 }
-const DayTalk = ({actor}: DayTalkProps) => {
+const TalkRoom = ({actor}: TalkRoomProps) => {
     const {t} = useTranslation();
     const {
         players,
@@ -27,7 +27,7 @@ const DayTalk = ({actor}: DayTalkProps) => {
         next,
         challengeNow,
         challengeNext,
-    } = useDayTalk(actor);
+    } = useTalkRoom(actor);
 
     return (
         <>
@@ -83,4 +83,4 @@ const BottomMenu = ({nextTitle, isDone, next}: BottomMenuArgs) =>
         </button>
     </div>;
 
-export default DayTalk;
+export default TalkRoom;

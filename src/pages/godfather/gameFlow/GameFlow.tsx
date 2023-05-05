@@ -4,7 +4,7 @@ import appRoutes from "@/utilites/appRoutes";
 import {useMachine} from "@xstate/react";
 import {gameFlowMachine} from "@/stateMachines/godfather/gameFlowMachine";
 import {useGodfatherGamePlayers} from "@/store/godfatherGame";
-import DayTalk from "@/pages/godfather/gameFlow/dayTalk";
+import TalkRoom from "@/pages/godfather/gameFlow/talkRoom";
 import Voting from "@/pages/godfather/gameFlow/voting";
 
 // TODO: Game config hook
@@ -18,7 +18,7 @@ const GameFlow = () => {
     const players = useGodfatherGamePlayers();
     const [state, send] = useMachine(gameFlowMachine, {
         context: {
-            dayTalkMachineOptions: {
+            talkingMachineOptions: {
                 guards: {goNextAutomatically, expireChallengeAutomatically},
                 delays: {challengeTimeWindow, talkTime, challengeTime},
             },
@@ -35,8 +35,8 @@ const GameFlow = () => {
 
     return (
         <Routes>
-            <Route path={appRoutes.godfather.gameFlow.dayTalk}
-                   element={<DayTalk actor={state.context.dayTalkMachine}/>}/>
+            <Route path={appRoutes.godfather.gameFlow.talkRoom}
+                   element={<TalkRoom actor={state.context.talkingMachine}/>}/>
             <Route path={appRoutes.godfather.gameFlow.voting}
                    element={<Voting actor={state.context.votingMachine}/>}/>
         </Routes>
