@@ -17,6 +17,7 @@ type IncrementRoleQuantity = PayloadAction<{
 }>
 
 const initializeRolesFromData = (state: RolesState<any, any>, action: InitializeRolesFromDataAction) => {
+    state.dataKey = action.payload.dataKey;
     state.entities = data[action.payload.dataKey];
 };
 

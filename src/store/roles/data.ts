@@ -68,4 +68,4 @@ const godfather: GodfatherRoleType[] = [
     },
 ];
 
-export default {godfather};
+export default {godfather} as const;

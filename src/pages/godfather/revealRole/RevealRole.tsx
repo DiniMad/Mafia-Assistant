@@ -8,7 +8,7 @@ import Layout from "@/components/Layout";
 import {useTranslation} from "react-i18next";
 import {usePlayers} from "@/store/players";
 import Player from "@/pages/godfather/revealRole/Player";
-import {useRoles} from "@/store/roles";
+import {GodfatherRoleType, useRoles} from "@/store/roles";
 import {useDispatch} from "react-redux";
 import {assignRolesToPlayersRandomly, useGodfatherGamePlayers} from "@/store/godfatherGame";
 
@@ -18,7 +18,7 @@ const RoleSelection = () => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
     const players = usePlayers();
-    const roles = useRoles();
+    const roles = useRoles<GodfatherRoleType>();
     const godfatherPlayers = useGodfatherGamePlayers();
 
     useEffect(() => {

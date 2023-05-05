@@ -5,11 +5,13 @@ import RoleSelection from "@/pages/godfather/roleSelection";
 import RevealRole from "@/pages/godfather/revealRole";
 import GameFlow from "@/pages/godfather/gameFlow";
 import {useAppDispatch} from "@/store";
-import {initializeRolesFromData} from "@/store/roles";
+import {initializeRolesFromData, useRoleDataKey} from "@/store/roles";
 
 const Godfather = () => {
     const dispatch = useAppDispatch();
-    dispatch(initializeRolesFromData({dataKey: "godfather"}));
+    const roleDataKey = useRoleDataKey();
+    if (roleDataKey !== "godfather" && roleDataKey !== undefined)
+        dispatch(initializeRolesFromData({dataKey: "godfather"}));
 
     return (
         <Routes>

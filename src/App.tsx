@@ -6,12 +6,14 @@ import appRoutes from "@/utilites/appRoutes";
 import Home from "@/pages/home";
 import Godfather from "@/pages/godfather";
 import {useAppDispatch} from "@/store/hooks";
-import {initializePlayersFromStorage} from "@/store/players";
 import Players from "./pages/players";
+import {initializePlayersFromStorage} from "@/store/players";
+import {initializeRolesFromStorage} from "@/store/roles";
 
 function App() {
     const dispatch = useAppDispatch();
     dispatch(initializePlayersFromStorage());
+    dispatch(initializeRolesFromStorage());
 
     return (
         <AppComponent>

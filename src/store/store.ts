@@ -3,6 +3,7 @@ import {playersReducer} from "./players";
 import {playersListener} from "@/store/players/listeners";
 import {rolesReducer} from "@/store/roles";
 import {godfatherGameReducer} from "@/store/godfatherGame";
+import {rolesListener} from "@/store/roles/listeners";
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,9 @@ export const store = configureStore({
         godfatherGame: godfatherGameReducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(playersListener.middleware),
+        getDefaultMiddleware()
+            .concat(playersListener.middleware)
+            .concat(rolesListener.middleware),
 });
 
 export type AppState = ReturnType<typeof store.getState>
