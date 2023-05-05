@@ -62,7 +62,7 @@ export const votingMachine = createMachine<Context, Event>(
             }),
             sendEndEventToParent: sendParent(ctx => ({
                 type: "VOTING_END",
-                playersToDefence: ctx.players
+                playersWithTheVote: ctx.players
                     .filter(p => p.hasTheVote)
                     .map(p => p.id),
             })),
