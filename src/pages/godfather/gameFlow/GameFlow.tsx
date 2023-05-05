@@ -1,10 +1,11 @@
 ﻿import {useEffect} from "react";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import appRoutes from "@/utilites/appRoutes";
-import DayTalk from "@/pages/godfather/gameFlow/dayTalk";
 import {useMachine} from "@xstate/react";
 import {gameFlowMachine} from "@/stateMachines/godfather/gameFlowMachine";
 import {useGodfatherGamePlayers} from "@/store/godfatherGame";
+import DayTalk from "@/pages/godfather/gameFlow/dayTalk";
+import Voting from "@/pages/godfather/gameFlow/voting";
 
 // TODO: Game config hook
 const challengeTimeWindow = 3000;
@@ -36,6 +37,8 @@ const GameFlow = () => {
         <Routes>
             <Route path={appRoutes.godfather.gameFlow.dayTalk}
                    element={<DayTalk actor={state.context.dayTalkMachine}/>}/>
+            <Route path={appRoutes.godfather.gameFlow.voting}
+                   element={<Voting actor={state.context.votingMachine}/>}/>
         </Routes>
     );
 };
