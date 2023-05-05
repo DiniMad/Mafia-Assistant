@@ -58,7 +58,7 @@ const BottomMenu = ({shuffleRoles, onShuffleAnimationEnded, reshuffleAnimation}:
         </Link>
         <button tw="flex justify-center items-center h-10 w-10" onClick={shuffleRoles}>
             <ReshuffleIcon icon={faUndo}
-                           animation={reshuffleAnimation}
+                           animation={reshuffleAnimation ? tw`animate-rotate` : undefined}
                            onAnimationEnd={onShuffleAnimationEnded}/>
         </button>
         <Link tw="flex justify-center items-center h-10 w-10"
@@ -67,9 +67,9 @@ const BottomMenu = ({shuffleRoles, onShuffleAnimationEnded, reshuffleAnimation}:
         </Link>
     </div>;
 
-    const ReshuffleIcon = styled(FontAwesomeIcon)`
+const ReshuffleIcon = styled(FontAwesomeIcon)`
   ${tw`text-white text-2xl`}
-  ${({animation}: { animation: boolean }) => animation && tw`animate-rotate`}
+  ${({animation}: { animation?: TwStyle }) => animation}
 `;
 
 export default RoleSelection;
