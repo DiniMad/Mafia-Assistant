@@ -3,6 +3,7 @@ import {PlayerType} from "@/types/playerType";
 import {GodfatherRoleType} from "@/store/roles";
 import {GodfatherGameState} from "@/store/godfatherGame/godfatherSlice";
 import {GodfatherPlayer} from "@/types/godfatherGame";
+import {shuffleArray} from "@/utilites/arrayUtils";
 
 type AssignRolesToPlayersRandomlyAction = PayloadAction<{
     players: PlayerType[],
@@ -27,6 +28,7 @@ const assignRolesToPlayersRandomly = (state: GodfatherGameState, action: AssignR
         roleKey: shuffledRoles[index].key,
         roleSide: shuffledRoles[index].side,
         roleRevealed: false,
+        eliminated: false,
     }));
 };
 
@@ -36,18 +38,6 @@ const revealPlayerRole = (state: GodfatherGameState, action: RevealPlayerRoleAct
     if (player === undefined) return;
 
     player.roleRevealed = true;
-};
-
-const shuffleArray = <T>(array: T[]) => {
-    let currentIndex = array.length, randomIndex;
-
-    while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
 };
 
 export default {

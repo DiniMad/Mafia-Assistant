@@ -16,6 +16,8 @@ const appRoutes = {
             parent: "/godfather",
             talkRoom: "talkRoom",
             voting: "voting",
+            elimination: "elimination",
+            nightAction: "nightAction",
             pathTo,
         },
         pathTo,
