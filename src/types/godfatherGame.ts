@@ -1,5 +1,4 @@
 ﻿import {GodfatherRoleType} from "@/store/roles";
-import {resources} from "@/i18n/config";
 
 export type GodfatherPlayer = {
     readonly id: string,
@@ -16,6 +15,6 @@ export type EliminationCard = {
     available: boolean,
 }
 
-export type DisableAbilityNightAction = { action: "DISABLE_ABILITY"; playerId: GodfatherPlayer["id"]; }
-export type FaceOffNightAction = { action: "FACE_OFF"; playerToAct: GodfatherPlayer["id"]; }
-export type NightAction = DisableAbilityNightAction | FaceOffNightAction;
+export type DisableAbilityAct = { action: "DISABLE_ABILITY"; player: GodfatherPlayer["id"]; }
+export type FaceOffAct = { action: "FACE_OFF"; playerToAct: GodfatherPlayer["id"]; }
+export type NightAction = DisableAbilityAct | FaceOffAct;

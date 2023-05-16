@@ -16,9 +16,9 @@ import {
 } from "@/stateMachines/godfather/eliminationMachine";
 import appRoutes from "@/utilites/appRoutes";
 import {
-    DisableAbilityNightAction,
+    DisableAbilityAct,
     EliminationCard,
-    FaceOffNightAction,
+    FaceOffAct,
     GodfatherPlayer,
     NightAction,
 } from "@/types/godfatherGame";
@@ -251,14 +251,14 @@ export const gameFlowMachine = createMachine<Context, Event>({
             }),
             addDisableAbilityToNightActionList: assign({
                 nightActions: (ctx, e: DisableAbilityEvent) => {
-                    const action: DisableAbilityNightAction =
-                        {action: "DISABLE_ABILITY", playerId: e.playerId};
+                    const action: DisableAbilityAct =
+                        {action: "DISABLE_ABILITY", player: e.playerId};
                     return [...ctx.nightActions || [], action];
                 },
             }),
             addFaceOffToNightActionList: assign({
                 nightActions: (ctx, e: FaceOffEvent) => {
-                    const action: FaceOffNightAction =
+                    const action: FaceOffAct =
                         {action: "FACE_OFF", playerToAct: e.playerToAct};
                     return [...ctx.nightActions, action];
                 },
