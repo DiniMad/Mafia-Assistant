@@ -18,6 +18,7 @@ const appRoutes = {
             voting: "voting",
             elimination: "elimination",
             nightAction: "nightAction",
+            nightAnnouncement: "nightAnnouncement",
             pathTo,
         },
         pathTo,

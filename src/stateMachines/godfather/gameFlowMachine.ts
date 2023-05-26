@@ -14,6 +14,11 @@ import {
     Event as EliminationEvent,
     Context as EliminationContext,
 } from "@/stateMachines/godfather/eliminationMachine";
+import {
+    nightActionMachine,
+    Event as NightActionEvent,
+    Context as NightActionContext,
+} from "@/stateMachines/godfather/nightActionMachine";
 import appRoutes from "@/utilites/appRoutes";
 import {
     DisableAbilityAct,
@@ -36,12 +41,14 @@ export type Context = {
     talkingMachineOptions: typeof talkingMachine.options,
     votingMachine: ActorRef<VotingEvent, State<VotingContext, VotingEvent>>,
     eliminationMachine: ActorRef<EliminationEvent, State<EliminationContext, EliminationEvent>>,
+    nightActionMachine: ActorRef<NightActionEvent, State<NightActionContext, NightActionEvent>>,
 }
 
 export type InitializeEvent = { type: "INITIALIZE", players: GodfatherPlayer[] };
 export type TalkingEndEvent = { type: "TALKING_END" };
 export type VotingEndEvent = { type: "VOTING_END", playersWithTheVote: GodfatherPlayer["id"][] };
 export type EliminationEndEvent = { type: "ELIMINATION_END", usedCard: EliminationCard["key"] };
+export type NightActionEndEvent = { type: "NIGHT_ACTION_END", nightActions: NightAction[] };
 export type SilenceEvent = { type: "SILENCE", players: [GodfatherPlayer["id"], GodfatherPlayer["id"]] };
 export type DisableAbilityEvent = { type: "DISABLE_ABILITY", playerId: GodfatherPlayer["id"] };
 export type FaceOffEvent = { type: "FACE_OFF", playerToAct: GodfatherPlayer["id"] };
@@ -52,6 +59,7 @@ export type Event =
     | TalkingEndEvent
     | VotingEndEvent
     | EliminationEndEvent
+    | NightActionEndEvent
     | SilenceEvent
     | DisableAbilityEvent
     | FaceOffEvent
@@ -162,10 +170,22 @@ export const gameFlowMachine = createMachine<Context, Event>({
             },
             nightAction: {
                 entry: [
+                    "spawnNightActionMachine",
                     "assignAppRouteToNightActionPath",
+                    "sendInitializeEventToNightActionActor",
+                ],
+                on: {
+                    NIGHT_ACTION_END: {
+                        actions: "addNightActionsToExistingNightActions",
+                        target: "nightAnnouncement",
+                    },
+                },
+            },
+            nightAnnouncement: {
+                entry: [
+                    "assignAppRouteToNightAnnouncementPath",
                 ],
             },
-            nightAnnouncement: {},
             end: {},
         },
         on: {
@@ -238,8 +258,25 @@ export const gameFlowMachine = createMachine<Context, Event>({
                         .map(c => c.key),
                     players: ctx.players.filter(p => !p.eliminated),
                 })),
+            spawnNightActionMachine: assign({
+                nightActionMachine: () => spawn(nightActionMachine),
+            }),
             assignAppRouteToNightActionPath: assign({
                 appRoute: () => appRoutes.godfather.gameFlow.pathTo(appRoutes.godfather.gameFlow.nightAction),
+            }),
+            sendInitializeEventToNightActionActor: sendTo(
+                ctx => ctx.nightActionMachine,
+                ctx => ({
+                    type: "INITIALIZE",
+                    actedOnPlayers: ctx.players,
+                    actingPlayers: ctx.players.filter(p => !p.eliminated),
+                })),
+            addNightActionsToExistingNightActions: assign({
+                nightActions: (ctx, e: NightActionEndEvent) =>
+                    [...ctx.nightActions || [], ...e.nightActions],
+            }),
+            assignAppRouteToNightAnnouncementPath: assign({
+                appRoute: () => appRoutes.godfather.gameFlow.pathTo(appRoutes.godfather.gameFlow.nightAnnouncement),
             }),
             addEventPlayerToPlayersToExcludeFromTalk: assign({
                 playersToExcludeFromTalk: (ctx, e: SilenceEvent) => {

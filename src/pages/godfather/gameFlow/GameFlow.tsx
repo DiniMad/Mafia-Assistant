@@ -4,10 +4,11 @@ import appRoutes from "@/utilites/appRoutes";
 import {useMachine} from "@xstate/react";
 import {gameFlowMachine} from "@/stateMachines/godfather/gameFlowMachine";
 import {useGodfatherGamePlayers} from "@/store/godfatherGame";
+import {ELIMINATION_CARD_KEYS, EliminationCard} from "@/types/godfatherGame";
 import TalkRoom from "@/pages/godfather/gameFlow/talkRoom";
 import Voting from "@/pages/godfather/gameFlow/voting";
 import Elimination from "@/pages/godfather/gameFlow/elimination/Elimination";
-import {ELIMINATION_CARD_KEYS, EliminationCard} from "@/types/godfatherGame";
+import NightAction from "@/pages/godfather/gameFlow/nightAction/NightAction";
 
 // TODO: Game config hook
 const challengeTimeWindow = 3000;
@@ -46,6 +47,8 @@ const GameFlow = () => {
                    element={<Voting actor={state.context.votingMachine}/>}/>
             <Route path={appRoutes.godfather.gameFlow.elimination}
                    element={<Elimination actor={state.context.eliminationMachine}/>}/>
+            <Route path={appRoutes.godfather.gameFlow.nightAction}
+                   element={<NightAction actor={state.context.nightActionMachine}/>}/>
         </Routes>
     );
 };
