@@ -11,8 +11,8 @@ import {
 import {pure} from "xstate/lib/actions";
 
 type AnnouncementGuid = {
-    titleKey: `role-${GodfatherPlayer["roleKey"]}`,
-    textKey: `act-guid-${Uppercase<GodfatherPlayer["roleKey"]>}`,
+    titleKey: `role-${GodfatherPlayer["roleKey"]}` | "fakeAct",
+    textKey: `act-guid-${Uppercase<GodfatherPlayer["roleKey"]> | "FAKE_ACT"}`,
     propKey?: any,
 }
 type AnnouncementChoice = {
@@ -111,7 +111,11 @@ export const nightActionMachine = createMachine<Context, Event>({
             },
         },
         queue: {
-            entry: "setActedOnPlayersSelectedPropertyToFalse",
+            entry: [
+                "setActedOnPlayersSelectedPropertyToFalse",
+                "setAllPlayersActiveToTrue",
+                "setAllPlayersRevealRoleToFalse",
+            ],
             after: {
                 100: {
                     cond: "isAutomaticActing",
@@ -238,7 +242,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                     exit: "assignAnnouncementToUndefined",
                 },
             },
-            exit: "setAllPlayersActiveToTrue",
         },
         godfatherAct: {
             entry: [
@@ -314,10 +317,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                     exit: "assignAnnouncementToUndefined",
                 },
             },
-            exit: [
-                "setAllPlayersRevealRoleToFalse",
-                "setAllPlayersActiveToTrue",
-            ],
         },
         saulAct: {
             entry: [
@@ -380,10 +379,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                     },
                 },
             },
-            exit: [
-                "setAllPlayersRevealRoleToFalse",
-                "setAllPlayersActiveToTrue",
-            ],
         },
         matadorAct: {
             entry: [
@@ -424,10 +419,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                     },
                 },
             },
-            exit: [
-                "setAllPlayersRevealRoleToFalse",
-                "setAllPlayersActiveToTrue",
-            ],
         },
         watsonAct: {
             initial: "guid",
@@ -495,7 +486,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                     },
                 },
             },
-            exit: "setAllPlayersActiveToTrue",
         },
         kaneAct: {
             entry: "setActingPlayerActiveToFalse",
@@ -530,7 +520,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                     },
                 },
             },
-            exit: "setAllPlayersActiveToTrue",
         },
         constantineAct: {
             entry: [
@@ -568,11 +557,32 @@ export const nightActionMachine = createMachine<Context, Event>({
                     },
                 },
             },
-            exit: "setAllPlayersActiveToTrue",
         },
         fakeAct: {
-            on: {
-                NEXT: "queue",
+            entry: "setAllExpectOneRandomPlayerActiveToFalse",
+            initial: "guid",
+            states: {
+                guid: {
+                    entry: "assignAnnouncementToFakeActGuid",
+                    on: {
+                        NEXT: "playerSelection",
+                    },
+                    exit: "assignAnnouncementToUndefined",
+                },
+                playerSelection: {
+                    on: {
+                        SELECT_PLAYER: {
+                            cond: "eventSelectedPlayerIsActive",
+                            actions: "toggleEventPlayerSelected",
+                        },
+                        NEXT: [
+                            {
+                                cond: "activePlayerIsSelected",
+                                target: "#nightAction.queue",
+                            },
+                        ],
+                    },
+                },
             },
         },
     },
@@ -621,6 +631,11 @@ export const nightActionMachine = createMachine<Context, Event>({
         moreOrLessThanOnePlayerSelected: ctx => {
             const selectedPlayers = ctx.actedOnPlayers.filter(p => p.selected);
             return selectedPlayers.length !== 1;
+        },
+        activePlayerIsSelected: ctx => {
+            const activePlayers =
+                ctx.actedOnPlayers.filter(p => p.active);
+            return activePlayers.every(p => p.selected);
         },
         selectedPlayerIsOnMafiaSide: ctx => {
             const selectedPlayer = ctx.actedOnPlayers.find(p => p.selected);
@@ -754,6 +769,18 @@ export const nightActionMachine = createMachine<Context, Event>({
                     ({...p, active: false}));
             },
         }),
+        setAllExpectOneRandomPlayerActiveToFalse: assign({
+            actedOnPlayers: ctx => {
+                const randomIndex =
+                    Math.floor(Math.random() * ctx.actedOnPlayers.length);
+                const randomPlayer = ctx.actedOnPlayers[randomIndex];
+
+                return ctx.actedOnPlayers.map<ActedOnPlayer>(p =>
+                    (p.id === randomPlayer.id ?
+                        {...p, active: true} :
+                        {...p, active: false}));
+            },
+        }),
         toggleEventPlayerSelected: assign({
             actedOnPlayers: (ctx, e: SelectPlayerEvent) => {
                 return ctx.actedOnPlayers.map(p => p.id === e.player ? {...p, selected: !p.selected} : p);
@@ -807,6 +834,12 @@ export const nightActionMachine = createMachine<Context, Event>({
             announcement: () => ({
                 titleKey: "role-constantine",
                 textKey: "act-guid-CONSTANTINE",
+            }),
+        }),
+        assignAnnouncementToFakeActGuid: assign({
+            announcement: () => ({
+                titleKey: "fakeAct",
+                textKey: "act-guid-FAKE_ACT",
             }),
         }),
         assignAnnouncementToNostradamusChoice: assign({
