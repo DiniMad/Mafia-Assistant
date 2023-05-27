@@ -51,10 +51,10 @@ const PlayerComponent = styled.button`
 `;
 
 const Action = styled.p`
-  ${tw`col-[1/2] row-[1] text-lg text-white text-center`}
+  ${tw`col-[1/2] row-[1] text-xs text-white text-center text-clip`}
   ${({hidden}: { hidden: boolean }) => hidden ? tw`hidden` : tw`block`}
 `;
-const PlayerName = tw.p`col-[2/3] row-[1] text-lg text-white text-center`;
+const PlayerName = tw.p`col-[2/3] row-[1] text-lg text-white text-center text-clip`;
 const PlayerRole = styled.p`
   ${tw`col-[3/4] row-[1] z-[1] text-xs text-center text-clip`}
   ${({hidden}: { hidden: boolean }) => hidden ? tw`hidden` : tw`block`}
