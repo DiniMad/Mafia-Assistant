@@ -34,13 +34,13 @@ const ActedOnPlayer = ({
 
     return (
         <PlayerComponent disabled={!active} selected={selected} onClick={selectThePlayer}>
-            <Action hidden={act === undefined}>
+            <PlayerDetail tw="col-[1/2]" hidden={!act}>
                 {t(`godfather:${act!}`)}
-            </Action>
+            </PlayerDetail>
             <PlayerName>{playerName}</PlayerName>
-            <PlayerRole hidden={!revealRole}>
+            <PlayerDetail tw="col-[3/4]" hidden={!revealRole}>
                 {t(`godfather:role-${playerRole}`)}
-            </PlayerRole>
+            </PlayerDetail>
         </PlayerComponent>
     );
 };
@@ -50,13 +50,9 @@ const PlayerComponent = styled.button`
   ${({selected}: { selected: boolean }) => selected && tw`bg-accent-300`}
 `;
 
-const Action = styled.p`
-  ${tw`col-[1/2] row-[1] text-xs text-white text-center text-clip`}
-  ${({hidden}: { hidden: boolean }) => hidden ? tw`hidden` : tw`block`}
-`;
 const PlayerName = tw.p`col-[2/3] row-[1] text-lg text-white text-center text-clip`;
-const PlayerRole = styled.p`
-  ${tw`col-[3/4] row-[1] z-[1] text-xs text-center text-clip`}
+const PlayerDetail = styled.p`
+  ${tw`row-[1] z-[1] text-xs text-center text-clip`}
   ${({hidden}: { hidden: boolean }) => hidden ? tw`hidden` : tw`block`}
 `;
 
