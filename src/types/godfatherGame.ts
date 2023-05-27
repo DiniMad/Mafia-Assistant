@@ -29,7 +29,18 @@ export type NostradamusAct = {
     ],
     sideChoice?: Extract<GodfatherPlayer["roleSide"], "Mafia" | "Citizen">
 }
-export type GodfatherAct = { action: "GODFATHER"; choice: "shot" | "6sense"; player: GodfatherPlayer["id"] };
+export type GodfatherShotAct = {
+    action: "GODFATHER";
+    choice: "shot";
+    player: GodfatherPlayer["id"]
+};
+export type Godfather6SenseAct = {
+    action: "GODFATHER";
+    choice: "6sense";
+    player: GodfatherPlayer["id"];
+    roleGuess: `role-${GodfatherPlayer["roleKey"]}`
+};
+export type GodfatherAct = GodfatherShotAct | Godfather6SenseAct;
 export type SaulAct = { action: "SAUL"; player: GodfatherPlayer["id"] };
 export type MatadorAct = { action: "MATADOR"; player: GodfatherPlayer["id"] };
 export type WatsonAct = { action: "WATSON"; players: GodfatherPlayer["id"][] };

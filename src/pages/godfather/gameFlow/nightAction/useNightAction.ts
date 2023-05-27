@@ -11,6 +11,8 @@ export default (actor: ActorRef<Event, State<Context, Event>>) => {
     const isInQueue = state.matches("queue");
     const popup = state.context.announcement !== undefined;
     const announcement = state.context.announcement;
+    const mafiaAct = state.context.mafiaAct;
+    const revealMafiaAct = state.context.revealMafiaAct;
 
     const next = () => send({type: "NEXT"});
     const selectPlayer = (player: GodfatherPlayer["id"]) => send({type: "SELECT_PLAYER", player});
@@ -22,6 +24,8 @@ export default (actor: ActorRef<Event, State<Context, Event>>) => {
         isInQueue,
         popup,
         announcement,
+        mafiaAct,
+        revealMafiaAct,
         next,
         selectPlayer,
         chooseFromMultiAnswer,

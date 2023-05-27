@@ -6,7 +6,7 @@ import {
     guards,
     GodfatherAct,
     SaulAct,
-    MatadorAct, WatsonAct, LeonAct, KaneAct, ConstantinAct,
+    MatadorAct, WatsonAct, LeonAct, KaneAct, ConstantinAct, Godfather6SenseAct,
 } from "@/types/godfatherGame";
 import {pure} from "xstate/lib/actions";
 
@@ -21,13 +21,26 @@ type AnnouncementChoice = {
     }
     | {
     textKey: `act-choice-${Uppercase<Extract<GodfatherPlayer["roleKey"], "godfather">>}`
-    choices: ["shot", "6sense"?, "suggestion"?]
+    choices: ["shot", "6sense"?, "buy"?]
+}
+    | {
+    textKey: `act-choice-suggestion-${Uppercase<Extract<GodfatherPlayer["roleKey"], "saul" | "godfather">>}`
+    propKey: string,
+    choices: ["Accept", "Reject"]
+}
+    | {
+    textKey: `act-choice-6sense-role`
+    choices: typeof ALL_ROLES_EXPECT_MAFIA_ONES
 }
 type Suggestion = {
     byWhom: GodfatherPlayer,
     whomWhoSuggested: GodfatherPlayer,
     suggestedAct: "buy"
 }
+type MafiaAct = {
+    act: "shot" | "buy" | `role-${GodfatherPlayer["roleKey"]}`,
+    player: GodfatherPlayer["id"]
+};
 type ActedOnPlayer = GodfatherPlayer & {
     active: boolean,
     selected: boolean,
@@ -41,13 +54,15 @@ export type Context = {
     actedOnPlayers: ActedOnPlayer[]
     actingPlayers: ActingPlayer[]
     nightActions: NightAction[],
+    mafiaAct?: MafiaAct,
     suggestion?: Suggestion,
     announcement?: AnnouncementGuid | AnnouncementChoice,
     actingPlayer?: GodfatherPlayer,
+    revealMafiaAct: boolean,
     config: {
         doctorSaveQuantity: number,
         nostradamusChoiceQuantity: number;
-        mafiaChoices: ["shot", "6sense"?, "suggestion"?],
+        mafiaChoices: ["shot", "6sense"?, "buy"?],
         countOfActs: 1 | 2
     }
 }
@@ -94,10 +109,11 @@ export const nightActionMachine = createMachine<Context, Event>({
         actedOnPlayers: [],
         actingPlayers: [],
         nightActions: [],
+        revealMafiaAct: false,
         config: {
             doctorSaveQuantity: 2,
             nostradamusChoiceQuantity: 3,
-            mafiaChoices: ["shot", "6sense", "suggestion"],
+            mafiaChoices: ["shot", "6sense", "buy"],
             countOfActs: 2,
         },
     },
@@ -115,6 +131,7 @@ export const nightActionMachine = createMachine<Context, Event>({
                 "setActedOnPlayersSelectedPropertyToFalse",
                 "setAllPlayersActiveToTrue",
                 "setAllPlayersRevealRoleToFalse",
+                "setRevealMafiaActToFalse",
             ],
             after: {
                 100: {
@@ -142,36 +159,10 @@ export const nightActionMachine = createMachine<Context, Event>({
                     },
                     "nostradamusAct",
                 ],
-                GODFATHER_ACT: [
-                    {
-                        cond: "godfatherActExistInActions",
-                        target: "fakeAct",
-                    },
-                    {
-                        cond: "saulActExistInActions",
-                        target: "fakeAct",
-                    },
-                    "godfatherAct",
-                ],
-                SAUL_ACT: [
-                    {
-                        cond: "godfatherActExistInActions",
-                        target: "fakeAct",
-                    },
-                    {
-                        cond: "saulActExistInActions",
-                        target: "fakeAct",
-                    },
-                    "saulAct",
-                ],
-                MATADOR_ACT: [
-                    {
-                        cond: "matadorActExistInActions",
-                        target: "fakeAct",
-                    },
-                    "matadorAct",
-                ],
-                MAFIA_ACT: "fakeAct",
+                GODFATHER_ACT: "godfatherAct",
+                SAUL_ACT: "saulAct",
+                MATADOR_ACT: "matadorAct",
+                MAFIA_ACT: "mafiaAct",
                 WATSON_ACT: [
                     {
                         cond: "watsonActExistInActions",
@@ -247,6 +238,7 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setMafiaPlayersActiveToFalse",
+                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -254,6 +246,16 @@ export const nightActionMachine = createMachine<Context, Event>({
                     entry: "assignAnnouncementToGodfatherGuid",
                     on: {
                         NEXT: [
+                            {
+                                cond: "godfatherActExistInActions",
+                                actions: "setAllPlayersActiveToFalse",
+                                target: "playerSelection",
+                            },
+                            {
+                                cond: "saulActExistInActions",
+                                actions: "setAllPlayersActiveToFalse",
+                                target: "playerSelection",
+                            },
                             {
                                 cond: "saulSuggestedPlayerToBuy",
                                 target: "saulSuggestion",
@@ -264,13 +266,25 @@ export const nightActionMachine = createMachine<Context, Event>({
                     exit: "assignAnnouncementToUndefined",
                 },
                 saulSuggestion: {
+                    entry: "assignAnnouncementToSaulSuggestion",
                     on: {
-                        ACCEPT_SUGGESTION: {
-                            actions: "assignSaulActToNightActions",
-                            target: "#nightAction.queue",
-                        },
-                        REJECT_SUGGESTION: "playerSelection",
+                        CHOSEN_MULTI_ANSWER: [
+                            {
+                                cond: "playerChosenAccept",
+                                actions: [
+                                    "assignSaulActToNightActions",
+                                    "assignSaulActToMafiaAct",
+                                    "assignSuggestionToUndefined",
+                                ],
+                                target: "#nightAction.queue",
+                            },
+                            {
+                                cond: "playerChosenReject",
+                                target: "playerSelection",
+                            },
+                        ],
                     },
+                    exit: "assignAnnouncementToUndefined",
                 },
                 playerSelection: {
                     on: {
@@ -286,9 +300,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                             {
                                 cond: "moreOrLessThanOnePlayerSelected",
                             },
-                            {
-                                cond: "selectedPlayerIsOnMafiaSide",
-                            },
                             "choosingAction",
                         ],
                     },
@@ -299,17 +310,34 @@ export const nightActionMachine = createMachine<Context, Event>({
                         CHOSEN_MULTI_ANSWER: [
                             {
                                 cond: "godfatherChosenShot",
-                                actions: "assignGodfatherShotActToNightActions",
+                                actions: [
+                                    "assignGodfatherShotActToNightActions",
+                                    "assignGodfatherShotActToMafiaAct",
+                                ],
                                 target: "#nightAction.queue",
                             },
                             {
                                 cond: "godfatherChosen6Sense",
-                                actions: "assignGodfather6SenseActToNightActions",
-                                target: "#nightAction.queue",
+                                target: "6sense",
                             },
                             {
                                 cond: "godfatherChosenBuySuggestion",
                                 actions: "assignBuySuggestion",
+                                target: "#nightAction.queue",
+                            },
+                        ],
+                    },
+                    exit: "assignAnnouncementToUndefined",
+                },
+                "6sense": {
+                    entry: "assignAnnouncementTo6SenseRoleChoices",
+                    on: {
+                        CHOSEN_MULTI_ANSWER: [
+                            {
+                                actions: [
+                                    "assignGodfather6SenseActToNightActions",
+                                    "assignGodfather6SenseActToMafiaAct",
+                                ],
                                 target: "#nightAction.queue",
                             },
                         ],
@@ -322,6 +350,7 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setMafiaPlayersActiveToFalse",
+                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -330,11 +359,21 @@ export const nightActionMachine = createMachine<Context, Event>({
                     on: {
                         NEXT: [
                             {
+                                cond: "godfatherActExistInActions",
+                                actions: "setAllPlayersActiveToFalse",
+                                target: "playerSelection",
+                            },
+                            {
+                                cond: "saulActExistInActions",
+                                actions: "setAllPlayersActiveToFalse",
+                                target: "playerSelection",
+                            },
+                            {
                                 cond: "godfatherSuggestedPlayerToBuy",
                                 target: "godfatherSuggestion",
                             },
                             {
-                                cond: "suggestionExistInMafiaChoices",
+                                cond: "buyingExistInMafiaChoices",
                                 target: "playerSelection",
                             },
                             {
@@ -346,13 +385,25 @@ export const nightActionMachine = createMachine<Context, Event>({
                     exit: "assignAnnouncementToUndefined",
                 },
                 godfatherSuggestion: {
+                    entry: "assignAnnouncementToGodfatherSuggestion",
                     on: {
-                        ACCEPT_SUGGESTION: {
-                            actions: "assignSaulActToNightActions",
-                            target: "#nightAction.queue",
-                        },
-                        REJECT_SUGGESTION: "playerSelection",
+                        CHOSEN_MULTI_ANSWER: [
+                            {
+                                cond: "playerChosenAccept",
+                                actions: [
+                                    "assignSaulActToNightActions",
+                                    "assignSaulActToMafiaAct",
+                                    "assignSuggestionToUndefined",
+                                ],
+                                target: "#nightAction.queue",
+                            },
+                            {
+                                cond: "playerChosenReject",
+                                target: "playerSelection",
+                            },
+                        ],
                     },
+                    exit: "assignAnnouncementToUndefined",
                 },
                 playerSelection: {
                     on: {
@@ -369,10 +420,7 @@ export const nightActionMachine = createMachine<Context, Event>({
                                 cond: "moreOrLessThanOnePlayerSelected",
                             },
                             {
-                                cond: "selectedPlayerIsOnMafiaSide",
-                            },
-                            {
-                                actions: "assignSaulActToNightActions",
+                                actions: "assignBuySuggestion",
                                 target: "#nightAction.queue",
                             },
                         ],
@@ -384,6 +432,7 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setMafiaPlayersActiveToFalse",
+                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -409,13 +458,36 @@ export const nightActionMachine = createMachine<Context, Event>({
                                 cond: "moreOrLessThanOnePlayerSelected",
                             },
                             {
-                                cond: "selectedPlayerIsOnMafiaSide",
-                            },
-                            {
                                 actions: "assignMatadorActToNightActions",
                                 target: "#nightAction.queue",
                             },
                         ],
+                    },
+                },
+            },
+        },
+        mafiaAct: {
+            entry: [
+                "setMafiaPlayersRevealRoleToTrue",
+                "setAllPlayersActiveToFalse",
+                "setRevealMafiaActToTrue",
+            ],
+            initial: "guid",
+            states: {
+                guid: {
+                    entry: "assignAnnouncementToMafiaGuid",
+                    on: {
+                        NEXT: "playerSelection",
+                    },
+                    exit: "assignAnnouncementToUndefined",
+                },
+                playerSelection: {
+                    on: {
+                        SELECT_PLAYER: {
+                            cond: "eventSelectedPlayerIsActive",
+                            actions: "toggleEventPlayerSelected",
+                        },
+                        NEXT: "#nightAction.queue",
                     },
                 },
             },
@@ -609,8 +681,8 @@ export const nightActionMachine = createMachine<Context, Event>({
             ctx.suggestion?.byWhom.roleKey === "saul",
         godfatherSuggestedPlayerToBuy: ctx =>
             ctx.suggestion?.byWhom.roleKey === "godfather",
-        suggestionExistInMafiaChoices: ctx =>
-            ctx.config.mafiaChoices.includes("suggestion"),
+        buyingExistInMafiaChoices: ctx =>
+            ctx.config.mafiaChoices.includes("buy"),
         eventSelectedPlayerIsActive: (ctx, e) => {
             if (e.type !== "SELECT_PLAYER") throw Error();
 
@@ -637,12 +709,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                 ctx.actedOnPlayers.filter(p => p.active);
             return activePlayers.every(p => p.selected);
         },
-        selectedPlayerIsOnMafiaSide: ctx => {
-            const selectedPlayer = ctx.actedOnPlayers.find(p => p.selected);
-            if (selectedPlayer === undefined) throw Error();
-
-            return selectedPlayer.roleSide === "Mafia";
-        },
         noPlayerIsSelected: ctx => {
             const selectedPlayers = ctx.actedOnPlayers.filter(p => p.selected);
             return selectedPlayers.length === 0;
@@ -659,6 +725,14 @@ export const nightActionMachine = createMachine<Context, Event>({
             if (player === undefined) throw Error();
 
             return player.canAct;
+        },
+        playerChosenAccept: (_, e) => {
+            if (e.type !== "CHOSEN_MULTI_ANSWER") throw Error();
+            return e.choiceIndex === 0;
+        },
+        playerChosenReject: (_, e) => {
+            if (e.type !== "CHOSEN_MULTI_ANSWER") throw Error();
+            return e.choiceIndex === 1;
         },
         godfatherChosenShot: (_, e) => {
             if (e.type !== "CHOSEN_MULTI_ANSWER") throw Error();
@@ -709,7 +783,7 @@ export const nightActionMachine = createMachine<Context, Event>({
                 } : p);
             },
         }),
-        sendSelectPlayerEventForNextPlayerInQueueOrder: pure((ctx, e: SelectPlayerEvent) => {
+        sendSelectPlayerEventForNextPlayerInQueueOrder: pure(ctx => {
             const player =
                 ctx.actingPlayers
                     .sort((p1, p2) =>
@@ -811,6 +885,12 @@ export const nightActionMachine = createMachine<Context, Event>({
                 textKey: "act-guid-MATADOR",
             }),
         }),
+        assignAnnouncementToMafiaGuid: assign({
+            announcement: () => ({
+                titleKey: "role-mafia",
+                textKey: "act-guid-MAFIA",
+            }),
+        }),
         assignAnnouncementToWatsonGuid: assign({
             announcement: ctx => ({
                 titleKey: "role-watson",
@@ -860,6 +940,26 @@ export const nightActionMachine = createMachine<Context, Event>({
                 choices: ctx.config.mafiaChoices,
             }),
         }),
+        assignAnnouncementToSaulSuggestion: assign({
+            announcement: ctx => ({
+                textKey: "act-choice-suggestion-SAUL",
+                propKey: ctx.suggestion?.whomWhoSuggested.name || "",
+                choices: ["Accept", "Reject"],
+            }),
+        }),
+        assignAnnouncementToGodfatherSuggestion: assign({
+            announcement: ctx => ({
+                textKey: "act-choice-suggestion-GODFATHER",
+                propKey: ctx.suggestion?.whomWhoSuggested.name || "",
+                choices: ["Accept", "Reject"],
+            }),
+        }),
+        assignAnnouncementTo6SenseRoleChoices: assign({
+            announcement: ctx => ({
+                textKey: "act-choice-6sense-role",
+                choices: ALL_ROLES_EXPECT_MAFIA_ONES,
+            }),
+        }),
         assignAnnouncementToUndefined: assign({
             announcement: () => undefined,
         }),
@@ -884,6 +984,12 @@ export const nightActionMachine = createMachine<Context, Event>({
 
                 return [...ctx.nightActions, act];
             },
+        }),
+        setRevealMafiaActToTrue: assign({
+            revealMafiaAct: () => true,
+        }),
+        setRevealMafiaActToFalse: assign({
+            revealMafiaAct: () => false,
         }),
         assignChosenAnswerToNostradamusAct: assign({
             nightActions: (ctx, e: ChosenMultiAnswerEvent) => {
@@ -912,27 +1018,75 @@ export const nightActionMachine = createMachine<Context, Event>({
             },
         }),
         assignGodfather6SenseActToNightActions: assign({
-            nightActions: ctx => {
+            nightActions: (ctx, e: ChosenMultiAnswerEvent) => {
                 const player =
                     ctx.actedOnPlayers.find(p => p.selected);
                 if (player === undefined) throw Error();
 
-                const act: GodfatherAct =
-                    {action: "GODFATHER", choice: "6sense", player: player.id};
+                const act: Godfather6SenseAct =
+                    {
+                        action: "GODFATHER",
+                        choice: "6sense",
+                        player: player.id,
+                        roleGuess: ALL_ROLES_EXPECT_MAFIA_ONES[e.choiceIndex],
+                    };
 
                 return [...ctx.nightActions, act];
             },
         }),
-        assignBuySuggestion: assign({}),
-        assignSaulActToNightActions: assign({
-            nightActions: ctx => {
+        assignGodfatherShotActToMafiaAct: assign({
+            mafiaAct: ctx => {
                 const player =
                     ctx.actedOnPlayers.find(p => p.selected);
                 if (player === undefined) throw Error();
 
-                const act: SaulAct = {action: "SAUL", player: player.id};
+                return {act: "shot", player: player.id};
+            },
+        }),
+        assignGodfather6SenseActToMafiaAct: assign({
+            mafiaAct: (ctx, e: ChosenMultiAnswerEvent) => {
+                const player =
+                    ctx.actedOnPlayers.find(p => p.selected);
+                if (player === undefined) throw Error();
+
+                return {act: ALL_ROLES_EXPECT_MAFIA_ONES[e.choiceIndex], player: player.id};
+            },
+        }),
+        assignBuySuggestion: assign({
+            suggestion: ctx => {
+                if (ctx.actingPlayer === undefined) throw Error();
+
+                const selectedPlayer =
+                    ctx.actedOnPlayers.find(p => p.selected);
+                if (selectedPlayer === undefined) throw Error();
+
+                return {
+                    suggestedAct: "buy",
+                    byWhom: ctx.actingPlayer,
+                    whomWhoSuggested: selectedPlayer,
+                };
+            },
+        }),
+        assignSuggestionToUndefined: assign({
+            suggestion: () => undefined,
+        }),
+        assignSaulActToNightActions: assign({
+            nightActions: ctx => {
+                if (ctx.suggestion === undefined) throw Error();
+
+                const act: SaulAct = {
+                    action: "SAUL",
+                    player: ctx.suggestion.whomWhoSuggested.id,
+                };
 
                 return [...ctx.nightActions, act];
+            },
+        }),
+        assignSaulActToMafiaAct: assign({
+            mafiaAct: ctx => {
+                if (ctx.suggestion === undefined) throw Error();
+
+                return {act: "buy", player: ctx.suggestion.whomWhoSuggested.id};
             },
         }),
         assignMatadorActToNightActions: assign({
@@ -1020,3 +1174,5 @@ const roleToActEventMapper = (role: GodfatherPlayer["roleKey"]): RoleActEvent =>
             return "CITIZEN_ACT";
     }
 };
+const ALL_ROLES_EXPECT_MAFIA_ONES =
+    ["role-nostradamus", "role-watson", "role-leon", "role-kane", "role-constantine", "role-citizen"] as const;

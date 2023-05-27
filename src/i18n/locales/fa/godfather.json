@@ -55,11 +55,16 @@
     "act-guid-CITIZEN": "شما نقشی در شب ندارید",
     "act-choice-NOSTRADAMUS": "ساید خود را انتخاب کنید",
     "act-choice-GODFATHER": "حرکت خود را انتخاب کنید",
+    "act-choice-suggestion-SAUL": "ساول یازیکن '{{prop}}' را برای خرید پیشنهاد کرده است",
+    "act-choice-suggestion-GODFATHER": "پدرخوانده یازیکن '{{prop}}' را برای خرید پیشنهاد کرده است",
+    "act-choice-6sense-role": "نقش بازیکن مورد نظر را انتخاب کنید",
     "fakeAct": "فعالیت ساختگی",
     "Citizen": "شهروند",
     "Mafia": "مافیا",
     "shot": "شلیک",
     "6sense": "حس ششم",
-    "suggestion": "پیشنهاد"
+    "buy": "خرید",
+    "Accept": "قبول",
+    "Reject": "رد"
   }
 }

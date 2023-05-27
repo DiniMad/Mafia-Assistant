@@ -12,7 +12,8 @@ const NightActionAnnouncement = ({announcement, next, chooseAnswer}: NightAction
     const {t} = useTranslation();
 
     const isMultiAnswer = "choices" in announcement;
-    const title = "titleKey" in announcement ? t(`godfather:${announcement.titleKey}`) : undefined;
+    const title =
+        "titleKey" in announcement ? t(`godfather:${announcement.titleKey}`) : undefined;
     const text = t(`godfather:${announcement.textKey}`, {
         prop: "propKey" in announcement ? t(announcement.propKey) : undefined,
     });
@@ -35,10 +36,10 @@ const NightActionAnnouncement = ({announcement, next, chooseAnswer}: NightAction
 };
 
 const NightActionAnnouncementComponent = tw.div`bg-background-300 flex flex-col flex-wrap justify-between items-center h-5/6 w-full m-8 p-6`;
-const GuidTitle = tw.button`text-white text-2xl font-bold text-center`;
-const GuidText = tw.button`text-white text-xl text-center`;
+const GuidTitle = tw.p`text-white text-2xl font-bold text-center`;
+const GuidText = tw.p`text-white text-xl text-center [direction:rtl]`;
 const MultiAnswerContainer = tw.div`flex flex-wrap justify-center items-center`;
-const MultiAnswerButton = tw.button`bg-accent-300 text-white text-lg h-10 w-24 m-2`;
+const MultiAnswerButton = tw.button`bg-accent-300 text-white text-lg h-10 w-28 m-1`;
 const GuidOkButton = tw.button`bg-accent-300 text-white text-lg h-10 w-40`;
 
 

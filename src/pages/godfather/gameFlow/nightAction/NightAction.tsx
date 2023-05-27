@@ -24,6 +24,8 @@ const NightAction = ({actor}: NightActionProps) => {
         isInQueue,
         popup,
         announcement,
+        mafiaAct,
+        revealMafiaAct,
         next,
         selectPlayer,
         chooseFromMultiAnswer,
@@ -45,9 +47,11 @@ const NightAction = ({actor}: NightActionProps) => {
                                            playerId={p.id}
                                            playerName={p.name}
                                            playerRole={p.roleKey}
+                                           mafiaAct={mafiaAct}
                                            active={p.active}
                                            selected={p.selected}
                                            revealRole={p.revealRole}
+                                           revealMafiaAct={revealMafiaAct}
                                            select={selectPlayer}/>)}
                 </PlayerList>
             </Layout>
