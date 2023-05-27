@@ -58,7 +58,6 @@ export type Context = {
     suggestion?: Suggestion,
     announcement?: AnnouncementGuid | AnnouncementChoice,
     actingPlayer?: GodfatherPlayer,
-    revealMafiaAct: boolean,
     config: {
         doctorSaveQuantity: number,
         nostradamusChoiceQuantity: number;
@@ -109,7 +108,6 @@ export const nightActionMachine = createMachine<Context, Event>({
         actedOnPlayers: [],
         actingPlayers: [],
         nightActions: [],
-        revealMafiaAct: false,
         config: {
             doctorSaveQuantity: 2,
             nostradamusChoiceQuantity: 3,
@@ -131,7 +129,6 @@ export const nightActionMachine = createMachine<Context, Event>({
                 "setActedOnPlayersSelectedPropertyToFalse",
                 "setAllPlayersActiveToTrue",
                 "setAllPlayersRevealRoleToFalse",
-                "setRevealMafiaActToFalse",
             ],
             after: {
                 100: {
@@ -238,7 +235,6 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setMafiaPlayersActiveToFalse",
-                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -350,7 +346,6 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setMafiaPlayersActiveToFalse",
-                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -432,7 +427,6 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setMafiaPlayersActiveToFalse",
-                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -470,7 +464,6 @@ export const nightActionMachine = createMachine<Context, Event>({
             entry: [
                 "setMafiaPlayersRevealRoleToTrue",
                 "setAllPlayersActiveToFalse",
-                "setRevealMafiaActToTrue",
             ],
             initial: "guid",
             states: {
@@ -984,12 +977,6 @@ export const nightActionMachine = createMachine<Context, Event>({
 
                 return [...ctx.nightActions, act];
             },
-        }),
-        setRevealMafiaActToTrue: assign({
-            revealMafiaAct: () => true,
-        }),
-        setRevealMafiaActToFalse: assign({
-            revealMafiaAct: () => false,
         }),
         assignChosenAnswerToNostradamusAct: assign({
             nightActions: (ctx, e: ChosenMultiAnswerEvent) => {

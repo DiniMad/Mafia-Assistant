@@ -12,7 +12,6 @@ type PlayerProps = {
     active: boolean,
     selected: boolean,
     revealRole: boolean,
-    revealMafiaAct: boolean,
     select: (playedId: GodfatherPlayer["id"]) => void
 }
 const ActedOnPlayer = ({
@@ -23,14 +22,13 @@ const ActedOnPlayer = ({
                            active,
                            selected,
                            revealRole,
-                           revealMafiaAct,
                            select,
                        }: PlayerProps) => {
     const {t} = useTranslation();
     const selectThePlayer = () => select(playerId);
 
     const act =
-        revealMafiaAct && mafiaAct?.player === playerId ? mafiaAct.act : undefined;
+        mafiaAct?.player === playerId ? mafiaAct.act : undefined;
 
     return (
         <PlayerComponent disabled={!active} selected={selected} onClick={selectThePlayer}>

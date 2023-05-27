@@ -25,7 +25,6 @@ const NightAction = ({actor}: NightActionProps) => {
         popup,
         announcement,
         mafiaAct,
-        revealMafiaAct,
         next,
         selectPlayer,
         chooseFromMultiAnswer,
@@ -51,7 +50,6 @@ const NightAction = ({actor}: NightActionProps) => {
                                            active={p.active}
                                            selected={p.selected}
                                            revealRole={p.revealRole}
-                                           revealMafiaAct={revealMafiaAct}
                                            select={selectPlayer}/>)}
                 </PlayerList>
             </Layout>
