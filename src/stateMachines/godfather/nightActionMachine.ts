@@ -66,39 +66,16 @@ export type Context = {
     }
 }
 
-type InitializeEvent = { type: "INITIALIZE", actedOnPlayers: GodfatherPlayer[], actingPlayers: GodfatherPlayer[] };
-type NostradamusActEvent = { type: "NOSTRADAMUS_ACT" };
-type GodfatherActEvent = { type: "GODFATHER_ACT" };
-type SaulActEvent = { type: "SAUL_ACT" };
-type MatadorActEvent = { type: "MATADOR_ACT" };
-type MafiaActEvent = { type: "MAFIA_ACT" };
-type WatsonActEvent = { type: "WATSON_ACT" };
-type LeonActEvent = { type: "LEON_ACT" };
-type KaneActEvent = { type: "KANE_ACT" };
-type ConstantineActEvent = { type: "CONSTANTINE_ACT" };
-type CitizenActEvent = { type: "CITIZEN_ACT" };
+type InitializeEvent = {
+    type: "INITIALIZE", actedOnPlayers: GodfatherPlayer[], actingPlayers: GodfatherPlayer[]
+};
+type RoleActEvent = {
+    type: "NOSTRADAMUS_ACT" | "GODFATHER_ACT" | "SAUL_ACT" | "MATADOR_ACT" | "MAFIA_ACT" | "WATSON_ACT" | "LEON_ACT" | "KANE_ACT" | "CONSTANTINE_ACT" | "CITIZEN_ACT"
+};
 type SelectPlayerEvent = { type: "SELECT_PLAYER", player: GodfatherPlayer["id"] };
 type ChosenMultiAnswerEvent = { type: "CHOSEN_MULTI_ANSWER", choiceIndex: number };
-type AcceptSuggestionEvent = { type: "ACCEPT_SUGGESTION" };
-type RejectSuggestionEvent = { type: "REJECT_SUGGESTION" };
 type NextEvent = { type: "NEXT" };
-export type Event =
-    InitializeEvent |
-    NostradamusActEvent |
-    GodfatherActEvent |
-    SaulActEvent |
-    MatadorActEvent |
-    MafiaActEvent |
-    WatsonActEvent |
-    LeonActEvent |
-    KaneActEvent |
-    ConstantineActEvent |
-    CitizenActEvent |
-    SelectPlayerEvent |
-    ChosenMultiAnswerEvent |
-    AcceptSuggestionEvent |
-    RejectSuggestionEvent |
-    NextEvent;
+export type Event = InitializeEvent | SelectPlayerEvent | RoleActEvent | ChosenMultiAnswerEvent | NextEvent;
 
 export const nightActionMachine = createMachine<Context, Event>({
     predictableActionArguments: true,
@@ -948,7 +925,7 @@ export const nightActionMachine = createMachine<Context, Event>({
             }),
         }),
         assignAnnouncementTo6SenseRoleChoices: assign({
-            announcement: ctx => ({
+            announcement: () => ({
                 textKey: "act-choice-6sense-role",
                 choices: ALL_ROLES_EXPECT_MAFIA_ONES,
             }),
@@ -1136,8 +1113,7 @@ export const nightActionMachine = createMachine<Context, Event>({
     },
 });
 
-type RoleActEvent = Extract<Event["type"], `${Uppercase<GodfatherPlayer["roleKey"]>}_ACT`>
-const roleToActEventMapper = (role: GodfatherPlayer["roleKey"]): RoleActEvent => {
+const roleToActEventMapper = (role: GodfatherPlayer["roleKey"]): RoleActEvent["type"] => {
     switch (role) {
         case "godfather":
             return "GODFATHER_ACT";
