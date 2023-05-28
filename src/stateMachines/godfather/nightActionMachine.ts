@@ -411,7 +411,14 @@ export const nightActionMachine = createMachine<Context, Event>({
                 guid: {
                     entry: "assignAnnouncementToMatadorGuid",
                     on: {
-                        NEXT: "playerSelection",
+                        NEXT: [
+                            {
+                                cond: "matadorActExistInActions",
+                                actions: "setAllPlayersActiveToFalse",
+                                target: "playerSelection",
+                            },
+                            "playerSelection",
+                        ],
                     },
                     exit: "assignAnnouncementToUndefined",
                 },
@@ -638,6 +645,8 @@ export const nightActionMachine = createMachine<Context, Event>({
             ctx.nightActions.find(guards.isGodfatherAct) !== undefined,
         saulActExistInActions: ctx =>
             ctx.nightActions.find(guards.isSaulAct) !== undefined,
+        matadorActExistInActions: ctx =>
+            ctx.nightActions.find(guards.isMatadorAct) !== undefined,
         watsonActExistInActions: ctx =>
             ctx.nightActions.find(guards.isWatsonAct) !== undefined,
         leonActExistInActions: ctx =>
