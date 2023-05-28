@@ -2,9 +2,13 @@
 import {Context, Event} from "@/stateMachines/godfather/nightActionMachine";
 import {useActor} from "@xstate/react";
 import {GodfatherPlayer} from "@/types/godfatherGame";
+import {useEffect} from "react";
 
 export default (actor: ActorRef<Event, State<Context, Event>>) => {
     const [state, send] = useActor(actor);
+    
+    useEffect(()=>{
+        console.log(state.context.nightActions);},[state.context])
 
     const actedOnPlayers = state.context.actedOnPlayers;
     const actingPlayers = state.context.actingPlayers;

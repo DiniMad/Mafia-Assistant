@@ -78,7 +78,7 @@ export const gameFlowMachine = createMachine<Context, Event>({
                             "assignPlayers",
                             "assignPlayersToPlayersToTalk",
                         ],
-                        target: "dayTalk",
+                        target: "nightAction",
                     },
                 },
             },

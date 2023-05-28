@@ -6,27 +6,27 @@ import {
     guards,
     GodfatherAct,
     SaulAct,
-    MatadorAct, WatsonAct, LeonAct, KaneAct, ConstantinAct, Godfather6SenseAct,
+    MatadorAct, WatsonAct, LeonAct, KaneAct, ConstantinAct, Godfather6SenseAct, Role,
 } from "@/types/godfatherGame";
 import {pure} from "xstate/lib/actions";
 
 type AnnouncementGuid = {
     titleKey: `role-${GodfatherPlayer["roleKey"]}` | "fakeAct",
-    textKey: `act-guid-${Uppercase<GodfatherPlayer["roleKey"]> | "FAKE_ACT"}`,
+    textKey: `act-guid-${GodfatherPlayer["roleKey"] | "fakeAct"}`,
     propKey?: any,
 }
 type AnnouncementChoice = {
-        textKey: `act-choice-${Uppercase<Extract<GodfatherPlayer["roleKey"], "nostradamus">>}`
-        choices: readonly ["Mafia"] | readonly ["Mafia", "Citizen"]
+        textKey: `act-choice-${Role<"nostradamus">}`
+        choices: NostradamusAct["sideChoices"]
     }
     | {
-    textKey: `act-choice-${Uppercase<Extract<GodfatherPlayer["roleKey"], "godfather">>}`
+    textKey: `act-choice-${Role<"godfather">}`
     choices: ["shot", "6sense"?, "buy"?]
 }
     | {
-    textKey: `act-choice-suggestion-${Uppercase<Extract<GodfatherPlayer["roleKey"], "saul" | "godfather">>}`
+    textKey: `act-choice-suggestion-${Role<"saul" | "godfather">}`
     propKey: string,
-    choices: ["Accept", "Reject"]
+    choices: ["accept", "reject"]
 }
     | {
     textKey: `act-choice-6sense-role`
@@ -50,6 +50,12 @@ type ActingPlayer = GodfatherPlayer & {
     countOfCommittedAct: number,
     canAct: boolean,
 };
+type Config = {
+    doctorSaveQuantity: number,
+    nostradamusChoiceQuantity: number;
+    mafiaChoices: ["shot", "6sense"?, "buy"?],
+    countOfActs: 1 | 2
+}
 export type Context = {
     actedOnPlayers: ActedOnPlayer[]
     actingPlayers: ActingPlayer[]
@@ -58,12 +64,7 @@ export type Context = {
     suggestion?: Suggestion,
     announcement?: AnnouncementGuid | AnnouncementChoice,
     actingPlayer?: GodfatherPlayer,
-    config: {
-        doctorSaveQuantity: number,
-        nostradamusChoiceQuantity: number;
-        mafiaChoices: ["shot", "6sense"?, "buy"?],
-        countOfActs: 1 | 2
-    }
+    config: Config
 }
 
 type InitializeEvent = {
@@ -637,8 +638,6 @@ export const nightActionMachine = createMachine<Context, Event>({
             ctx.nightActions.find(guards.isGodfatherAct) !== undefined,
         saulActExistInActions: ctx =>
             ctx.nightActions.find(guards.isSaulAct) !== undefined,
-        matadorActExistInActions: ctx =>
-            ctx.nightActions.find(guards.isMatadorAct) !== undefined,
         watsonActExistInActions: ctx =>
             ctx.nightActions.find(guards.isWatsonAct) !== undefined,
         leonActExistInActions: ctx =>
@@ -651,8 +650,7 @@ export const nightActionMachine = createMachine<Context, Event>({
             ctx.suggestion?.byWhom.roleKey === "saul",
         godfatherSuggestedPlayerToBuy: ctx =>
             ctx.suggestion?.byWhom.roleKey === "godfather",
-        buyingExistInMafiaChoices: ctx =>
-            ctx.config.mafiaChoices.includes("buy"),
+        buyingExistInMafiaChoices: ctx => ctx.config.mafiaChoices.includes("buy"),
         eventSelectedPlayerIsActive: (ctx, e) => {
             if (e.type !== "SELECT_PLAYER") throw Error();
 
@@ -833,63 +831,63 @@ export const nightActionMachine = createMachine<Context, Event>({
         assignAnnouncementToNostradamusGuid: assign({
             announcement: ctx => ({
                 titleKey: "role-nostradamus",
-                textKey: "act-guid-NOSTRADAMUS",
+                textKey: "act-guid-nostradamus",
                 propKey: ctx.config.nostradamusChoiceQuantity,
             }),
         }),
         assignAnnouncementToGodfatherGuid: assign({
             announcement: () => ({
                 titleKey: "role-godfather",
-                textKey: "act-guid-GODFATHER",
+                textKey: "act-guid-godfather",
             }),
         }),
         assignAnnouncementToSaulGuid: assign({
             announcement: () => ({
                 titleKey: "role-saul",
-                textKey: "act-guid-SAUL",
+                textKey: "act-guid-saul",
             }),
         }),
         assignAnnouncementToMatadorGuid: assign({
             announcement: () => ({
                 titleKey: "role-matador",
-                textKey: "act-guid-MATADOR",
+                textKey: "act-guid-matador",
             }),
         }),
         assignAnnouncementToMafiaGuid: assign({
             announcement: () => ({
                 titleKey: "role-mafia",
-                textKey: "act-guid-MAFIA",
+                textKey: "act-guid-mafia",
             }),
         }),
         assignAnnouncementToWatsonGuid: assign({
             announcement: ctx => ({
                 titleKey: "role-watson",
-                textKey: "act-guid-WATSON",
+                textKey: "act-guid-watson",
                 propKey: ctx.config.doctorSaveQuantity,
             }),
         }),
         assignAnnouncementToLeonGuid: assign({
             announcement: () => ({
                 titleKey: "role-leon",
-                textKey: "act-guid-LEON",
+                textKey: "act-guid-leon",
             }),
         }),
         assignAnnouncementToKaneGuid: assign({
             announcement: () => ({
                 titleKey: "role-kane",
-                textKey: "act-guid-KANE",
+                textKey: "act-guid-kane",
             }),
         }),
         assignAnnouncementToConstantinGuid: assign({
             announcement: () => ({
                 titleKey: "role-constantine",
-                textKey: "act-guid-CONSTANTINE",
+                textKey: "act-guid-constantine",
             }),
         }),
         assignAnnouncementToFakeActGuid: assign({
             announcement: () => ({
                 titleKey: "fakeAct",
-                textKey: "act-guid-FAKE_ACT",
+                textKey: "act-guid-fakeAct",
             }),
         }),
         assignAnnouncementToNostradamusChoice: assign({
@@ -899,29 +897,29 @@ export const nightActionMachine = createMachine<Context, Event>({
                 if (act === undefined) throw Error();
 
                 return {
-                    textKey: "act-choice-NOSTRADAMUS",
+                    textKey: "act-choice-nostradamus",
                     choices: act.sideChoices,
                 };
             },
         }),
         assignAnnouncementToGodfatherChoice: assign({
             announcement: ctx => ({
-                textKey: "act-choice-GODFATHER",
+                textKey: "act-choice-godfather",
                 choices: ctx.config.mafiaChoices,
             }),
         }),
         assignAnnouncementToSaulSuggestion: assign({
             announcement: ctx => ({
-                textKey: "act-choice-suggestion-SAUL",
+                textKey: "act-choice-suggestion-saul",
                 propKey: ctx.suggestion?.whomWhoSuggested.name || "",
-                choices: ["Accept", "Reject"],
+                choices: ["accept", "reject"],
             }),
         }),
         assignAnnouncementToGodfatherSuggestion: assign({
             announcement: ctx => ({
-                textKey: "act-choice-suggestion-GODFATHER",
+                textKey: "act-choice-suggestion-godfather",
                 propKey: ctx.suggestion?.whomWhoSuggested.name || "",
-                choices: ["Accept", "Reject"],
+                choices: ["accept", "reject"],
             }),
         }),
         assignAnnouncementTo6SenseRoleChoices: assign({
@@ -942,8 +940,8 @@ export const nightActionMachine = createMachine<Context, Event>({
                         p.roleSide === "Mafia" && p.roleKey !== "godfather").length;
                 const sideChoices =
                     numberOfMafiasExceptGodfather > 1 ?
-                        ["Mafia"] as const :
-                        ["Mafia", "Citizen"] as const;
+                        ["mafia"] as const :
+                        ["mafia", "citizen"] as const;
 
                 const act: NostradamusAct = {
                     action: "NOSTRADAMUS",

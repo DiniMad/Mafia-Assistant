@@ -8,6 +8,7 @@ export type GodfatherPlayer = {
     roleRevealed: boolean,
     eliminated: boolean,
 }
+export type Role<T extends GodfatherPlayer["roleKey"]> = Extract<GodfatherPlayer["roleKey"], T>
 
 export const ELIMINATION_CARD_KEYS = ["SILENCE", "REVEAL_IDENTITY", "BEAUTIFUL_MIND", "DISABLE_ABILITY", "FACE_OFF"] as const;
 export type EliminationCard = {
@@ -22,12 +23,12 @@ export type NostradamusAct = {
     choices: GodfatherPlayer[],
     numberOfMafiasExceptGodfather: number,
     sideChoices: readonly [
-        Extract<GodfatherPlayer["roleSide"], "Mafia">,
+        Lowercase<Extract<GodfatherPlayer["roleSide"], "Mafia">>,
     ] | readonly[
-        Extract<GodfatherPlayer["roleSide"], "Mafia">,
-        Extract<GodfatherPlayer["roleSide"], "Citizen">
+        Lowercase<Extract<GodfatherPlayer["roleSide"], "Mafia">>,
+        Lowercase<Extract<GodfatherPlayer["roleSide"], "Citizen">>
     ],
-    sideChoice?: Extract<GodfatherPlayer["roleSide"], "Mafia" | "Citizen">
+    sideChoice?: Lowercase<Extract<GodfatherPlayer["roleSide"], "Mafia" | "Citizen">>
 }
 export type GodfatherShotAct = {
     action: "GODFATHER";
