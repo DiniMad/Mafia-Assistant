@@ -55,7 +55,7 @@ const TalkRoom = ({actor}: TalkRoomProps) => {
     );
 };
 
-const PlayerList = tw.div`flex flex-col justify-start `;
+const PlayerList = tw.div`flex flex-col justify-start h-full overflow-y-auto scrollbar-hide`;
 
 type StartPopupArgs = { title: string, playerName?: string, start: () => void };
 const StartPopup = ({title, playerName, start}: StartPopupArgs) =>

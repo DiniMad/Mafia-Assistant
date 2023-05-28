@@ -37,6 +37,6 @@ const PlayerList = () => {
 };
 
 
-const PlayersComponent = tw.div`flex flex-col justify-start h-full`;
+const PlayersComponent = tw.div`flex flex-col justify-start h-full overflow-y-auto scrollbar-hide`;
 
 export default PlayerList;

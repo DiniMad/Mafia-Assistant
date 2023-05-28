@@ -50,7 +50,7 @@ const Player = ({
 };
 
 const PlayerComponent = styled.div`
-  ${tw`grid grid-cols-[1fr_4fr_1fr] justify-items-center items-center text-white h-10 m-1.5`}
+  ${tw`grid grid-cols-[1fr_4fr_1fr] justify-items-center items-center text-white min-h-10 m-1.5`}
   ${({spoken, talking}: { spoken: boolean, talking: boolean }) =>
           talking ? tw`bg-accent-300` :
                   spoken ? tw`bg-background-300 bg-opacity-50` :

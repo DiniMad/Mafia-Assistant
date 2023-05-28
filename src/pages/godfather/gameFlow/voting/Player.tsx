@@ -25,7 +25,7 @@ const Player = ({playerId, playerName, hasTheVote, minimumRequiredCount, toggleH
     );
 };
 
-const PlayerComponent = tw.div`bg-background-300 grid grid-cols-[5fr_1fr] justify-items-center items-center text-white h-10 m-1.5`;
+const PlayerComponent = tw.div`bg-background-300 grid grid-cols-[5fr_1fr] justify-items-center items-center text-white min-h-10 m-1.5`;
 
 const PlayerName = tw.p`col-[1/3] row-[1/1] text-lg text-center`;
 

@@ -63,7 +63,7 @@ const NightAction = ({actor}: NightActionProps) => {
 };
 
 
-const PlayerList = tw.div`flex flex-col justify-start`;
+const PlayerList = tw.div`flex flex-col justify-start h-full overflow-y-auto scrollbar-hide`;
 
 const BottomMenu = ({next}: { next: () => void }) =>
     <div tw="flex justify-between items-center h-full w-full">

@@ -38,7 +38,7 @@ const ActingPlayer = ({playerId, playerName, active, select}: PlayerProps) => {
     );
 };
 
-const PlayerComponent = tw.button`bg-accent-300 disabled:bg-background-300  grid items-center disabled:bg-opacity-70 text-white h-10 m-1.5`;
+const PlayerComponent = tw.button`bg-accent-300 disabled:bg-background-300  grid items-center disabled:bg-opacity-70 text-white min-h-10 m-1.5`;
 
 const PlayerLongPressEffect = styled.div((
     {longPressing, transitionDuration}: { longPressing: boolean, transitionDuration: number }) => [

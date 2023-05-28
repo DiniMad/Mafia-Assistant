@@ -25,7 +25,7 @@ function Player({playerId, playerName}: PlayerProps) {
     );
 }
 
-const PlayerComponent = tw.div`bg-background-300 grid grid-cols-[5fr_1fr] justify-center items-center h-10 m-1.5`;
+const PlayerComponent = tw.div`bg-background-300 grid grid-cols-[5fr_1fr] justify-center items-center min-h-10 m-1.5`;
 
 const PlayerName = tw.p`col-[1/3] row-[1/1] text-white text-center text-lg`;
 

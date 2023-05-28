@@ -35,7 +35,7 @@ const Player = ({player, index}: PlayerProps) => {
 
 
 const PlayerComponent = styled.div`
-  ${tw`grid grid-cols-[6fr 1fr] items-center m-1.5 h-10 transition-colors duration-500`}
+  ${tw`grid grid-cols-[6fr 1fr] items-center m-1.5 min-h-10 transition-colors duration-500`}
   ${({dragging, selected}: { dragging: boolean, selected: boolean }) =>
           selected ?
                   dragging ? tw`bg-accent-400` : tw`bg-accent-300`

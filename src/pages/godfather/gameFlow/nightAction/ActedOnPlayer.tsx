@@ -44,7 +44,7 @@ const ActedOnPlayer = ({
 };
 
 const PlayerComponent = styled.button`
-  ${tw`bg-background-300 disabled:bg-background-300 disabled:bg-opacity-70 grid grid-cols-[1fr 3fr 1fr] items-center text-white h-10 m-1.5`}
+  ${tw`bg-background-300 disabled:bg-background-300 disabled:bg-opacity-70 grid grid-cols-[1fr 3fr 1fr] items-center text-white min-h-10 m-1.5`}
   ${({selected}: { selected: boolean }) => selected && tw`bg-accent-300`}
 `;
 

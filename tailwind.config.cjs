@@ -1,4 +1,18 @@
-﻿module.exports = {
+﻿function scrollbarPlugin({addComponents}) {
+    const classes = {
+        ".scrollbar-hide": {
+            "-ms-overflow-style": "none;", /* IE and Edge */
+            "scrollbar-width": "none;", /* Firefox */
+
+            "&::-webkit-scrollbar": {
+                "display": "none;" /* Chrome, Safari and Opera */
+            },
+        },
+    };
+    addComponents(classes);
+}
+
+module.exports = {
     theme: {
         extend: {
             colors: {
@@ -15,7 +29,7 @@
             },
             animation: {
                 "ping-small": "1.5s cubic-bezier(0, 0, 0.2, 1) 0s infinite normal none running ping-small",
-                "rotate":".3s forwards rotate"
+                "rotate": ".3s forwards rotate"
             },
             keyframes: {
                 "ping-small": {
@@ -29,8 +43,11 @@
                         transform: "rotate(-360deg)"
                     },
                 }
-            }
+            },
+            minHeight: {
+                "10": "2.5rem",
+            },
         },
     },
-    plugins: [],
+    plugins: [scrollbarPlugin],
 };

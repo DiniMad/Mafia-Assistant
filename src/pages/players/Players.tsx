@@ -35,7 +35,7 @@ function Players() {
 
 const PlayersComponent = tw.div`flex flex-col justify-between h-full`
 
-const PlayerList = tw.div`flex flex-col justify-start overflow-y-auto mb-1`
+const PlayerList = tw.div`flex flex-col justify-start overflow-y-auto scrollbar-hide mb-1`;
 
 
 const BottomMenu = ({ returnUrl }: { returnUrl: string }) => {

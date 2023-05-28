@@ -51,7 +51,7 @@ const Player = ({player: {id, name, roleKey, roleSide, roleRevealed}}: PlayerPro
     );
 };
 
-const PlayerButton = tw.button`bg-accent-300 disabled:bg-background-300 disabled:bg-opacity-70 grid items-center h-10 text-white text-lg select-none m-1.5`;
+const PlayerButton = tw.button`bg-accent-300 disabled:bg-background-300 disabled:bg-opacity-70 grid items-center min-h-10 text-white text-lg select-none m-1.5`;
 
 const PlayerLongPressEffect = styled.div((
     {longPressing, transitionDuration}: { longPressing: boolean, transitionDuration: number }) => [

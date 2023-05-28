@@ -19,7 +19,7 @@ const Player = ({playerId, playerName, selected, select}: PlayerProps) => {
 };
 
 const PlayerComponent = styled.button`
-  ${tw`flex justify-center items-center text-white h-10 m-1.5`}
+  ${tw`flex justify-center items-center text-white min-h-10 m-1.5`}
   ${({selected}: { selected: boolean }) => selected ? tw`bg-accent-300` : tw`bg-background-300`}
 `;
 
